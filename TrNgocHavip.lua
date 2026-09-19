@@ -1,4 +1,4 @@
--- VIP CYBER V8 - FIX KEO MENU + SLIDER + IGNORE GUI INSET + ESP
+-- VIP CYBER V8 - FIX LOI CHE TOPBAR
 print("=== VIP CYBER V8 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
@@ -21,7 +21,6 @@ local espEnabled=false
 local g=Instance.new("ScreenGui")
 g.Name="VipMenu"
 g.ResetOnSpawn=false
-g.IgnoreGuiInset=true
 g.Parent=pg
 
 local rainbowSeq = ColorSequence.new({
@@ -36,16 +35,16 @@ local rainbowSeq = ColorSequence.new({
 
 local ledElements = {}
 
--- Khung chinh (Da ha xuong 130, nam duoi thanh logo Roblox)
+-- Khung chinh (Da ha xuong de khong bi topbar che)
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0, 10, 0, 130)
+f.Position=UDim2.new(0, 15, 0, 50) -- Da chinh vi tri xuong thap hon
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
 Instance.new("UICorner",f).CornerRadius=UDim.new(0,12)
 
--- Vien LED 7 mau
+-- VIEN LED 7 MAU
 local borderFrame = Instance.new("Frame", f)
 borderFrame.Size = UDim2.new(1, 10, 1, 10)
 borderFrame.Position = UDim2.new(0, -5, 0, -5)
@@ -69,15 +68,21 @@ bgGrad.Color = ColorSequence.new({
 })
 bgGrad.Rotation = 45
 
--- Header (keo menu)
 local hd=Instance.new("Frame",f)
 hd.Size=UDim2.new(1,0,0,28)
 hd.BackgroundColor3=Color3.fromRGB(20,20,40)
 hd.BorderSizePixel=0
 hd.ZIndex=2
-hd.Active=true
+hd.Active = true
 hd.Parent=f
 Instance.new("UICorner",hd).CornerRadius=UDim.new(0,12)
+local hdCover=Instance.new("Frame",hd)
+hdCover.Size=UDim2.new(1,0,0.5,0)
+hdCover.Position=UDim2.new(0,0,0.5,0)
+hdCover.BackgroundColor3=Color3.fromRGB(20,20,40)
+hdCover.BorderSizePixel=0
+hdCover.ZIndex=2
+hdCover.Parent=hd
 
 local title=Instance.new("TextLabel",hd)
 title.Size=UDim2.new(1,-56,1,0)
@@ -158,7 +163,6 @@ local function set(b,on,onT,offT)
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- Slider
 local function slider(label,y,min,max,init,cb)
     local lbl=Instance.new("TextLabel",cont)
     lbl.Size=UDim2.new(1,-12,0,14)
@@ -177,7 +181,6 @@ local function slider(label,y,min,max,init,cb)
     tr.Position=UDim2.new(0,6,0,y+16)
     tr.BackgroundColor3=Color3.fromRGB(30,30,45)
     tr.BorderSizePixel=0
-    tr.Active=true
     tr.Name = "SliderTrack"
     Instance.new("UICorner",tr).CornerRadius=UDim.new(0,6)
     
@@ -252,7 +255,7 @@ slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0,10,0,130)
+openBtn.Position=UDim2.new(0,15,0,50) -- Chinh vi tri nut mo lai cho khop
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
@@ -295,7 +298,6 @@ dnBtn.MouseButton1Down:Connect(function() dnS=1 end)
 dnBtn.MouseButton1Up:Connect(function() dnS=0 end)
 dnBtn.MouseLeave:Connect(function() dnS=0 end)
 
--- Keo menu bang header
 local dragging = false
 local dragStart = nil
 local startPos = nil
@@ -331,7 +333,6 @@ UIS.InputEnded:Connect(function(input)
     end
 end)
 
--- LED doi mau
 local textHue = 0
 RS.RenderStepped:Connect(function(dt)
     textHue = (textHue + dt * 0.3) % 1
@@ -347,7 +348,6 @@ RS.RenderStepped:Connect(function(dt)
     end
 end)
 
--- ESP
 local espGuis = {}
 
 local function createESP(pl)
@@ -378,7 +378,7 @@ local function createESP(pl)
     
     local healthBg = Instance.new("Frame")
     healthBg.Size = UDim2.new(1, -20, 0, 8)
-    healthBg.Position = UDim2.new(0, 10, 0, 18)
+    healthBg.Position = UDim2.new(0, 10, 0RGB, 18)
     healthBg.BackgroundColor3 = Color3.fromRGB(30,30,30)
     healthBg.BorderSizePixel = 0
     healthBg.Parent = billboard
@@ -389,14 +389,14 @@ local function createESP(pl)
     healthFill.BackgroundColor3 = Color3.fromRGB(0,255,0)
     healthFill.BorderSizePixel = 0
     healthFill.Parent = healthBg
-    Instance.new("UICorner", healthFill).CornerRadius = UDim.new(0,4)
+    Instance.new("UICorner", healthFill).Cor(nerRadius = UDim.new(0,4)
     
     local healthText = Instance.new("TextLabel")
-    healthText.Size = UDim2.new(1,0,0,12)
+    healthText.Size =255 UDim2.new(1,0,0,12)
     healthText.Position = UDim2.new(0,0,0,28)
-    healthText.BackgroundTransparency = 1
+,    healthText.BackgroundTransparency = 1
     healthText.Text = ""
-    healthText.TextColor3 = Color3.fromRGB(255,255,255)
+    healthText.TextColor3 =255 Color3.from,255)
     healthText.TextStrokeTransparency = 0
     healthText.TextStrokeColor3 = Color3.fromRGB(0,0,0)
     healthText.Font = Enum.Font.GothamBold
