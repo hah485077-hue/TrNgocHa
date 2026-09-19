@@ -1,25 +1,11 @@
--- VIP CYBER V8.2 - FULL FIXED
-print("=== VIP CYBER V8.2 ===")
+-- VIP CYBER V10 - NUT VIP KEO DUOC + MENU SAT LE TRAI
+print("=== VIP CYBER V10 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
-local GS=game:GetService("GuiService")
 local p=P.LocalPlayer
 local pg=p:WaitForChild("PlayerGui")
 local cam=workspace.CurrentCamera
-
--- CLEANUP SCRIPT CU
-if _G.__VIP_CYBER_CLEANUP then
-    pcall(_G.__VIP_CYBER_CLEANUP)
-end
-local conns = {}
-local function track(c) table.insert(conns, c); return c end
-_G.__VIP_CYBER_CLEANUP = function()
-    for _, c in ipairs(conns) do pcall(function() c:Disconnect() end) end
-    conns = {}
-    local old = pg:FindFirstChild("VipMenu")
-    if old then old:Destroy() end
-end
 
 local old=pg:FindFirstChild("VipMenu")
 if old then old:Destroy() end
@@ -29,6 +15,7 @@ local tgt,flyBV,flyBG,fs,rs2=nil,nil,nil,60,50
 local upS,dnS=0,0
 local lastTp,goodCam=0,nil
 local savedPos=nil
+local menuOn=true
 local espEnabled=false
 
 local g=Instance.new("ScreenGui")
@@ -48,23 +35,15 @@ local rainbowSeq = ColorSequence.new({
 
 local ledElements = {}
 
--- LAY TOPBAR INSET
-local topInset = 36
-pcall(function()
-    topInset = GS.TopbarInset.Height
-end)
-local menuY = topInset - 2
-
--- Khung chinh
+-- Khung chinh menu (Dat sat le trai, cao hon)
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0, 15, 0, menuY)
+f.Position=UDim2.new(0, 2, 0, 45)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
 Instance.new("UICorner",f).CornerRadius=UDim.new(0,12)
 
--- VIEN LED 7 MAU
 local borderFrame = Instance.new("Frame", f)
 borderFrame.Size = UDim2.new(1, 10, 1, 10)
 borderFrame.Position = UDim2.new(0, -5, 0, -5)
@@ -74,6 +53,12 @@ borderFrame.ZIndex = 0
 Instance.new("UICorner", borderFrame).CornerRadius = UDim.new(0, 16)
 local borderGrad = Instance.new("UIGradient", borderFrame)
 borderGrad.Color = rainbowSeq
+
+local borderAngle = 0
+RS.RenderStepped:Connect(function(dt)
+    borderAngle = (borderAngle + dt * 90) % 360
+    borderGrad.Rotation = borderAngle
+end)
 
 local bgGrad = Instance.new("UIGradient", f)
 bgGrad.Color = ColorSequence.new({
@@ -96,6 +81,7 @@ hdCover.Position=UDim2.new(0,0,0.5,0)
 hdCover.BackgroundColor3=Color3.fromRGB(20,20,40)
 hdCover.BorderSizePixel=0
 hdCover.ZIndex=2
+hdCover.Parent=hd
 
 local title=Instance.new("TextLabel",hd)
 title.Size=UDim2.new(1,-56,1,0)
@@ -105,6 +91,7 @@ title.TextColor3=Color3.fromRGB(0,255,255)
 title.Font=Enum.Font.GothamBold
 title.TextSize=12
 title.ZIndex=3
+title.Parent=hd
 table.insert(ledElements, title)
 
 local colBtn=Instance.new("TextButton",hd)
@@ -175,23 +162,6 @@ local function set(b,on,onT,offT)
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- SLIDER FIX MOBILE
-local activeSlider = nil
-
-track(UIS.InputChanged:Connect(function(inp)
-    if activeSlider and (inp.UserInputType==Enum.UserInputType.MouseMovement 
-        or inp.UserInputType==Enum.UserInputType.Touch) then
-        activeSlider(inp.Position.X)
-    end
-end))
-
-track(UIS.InputEnded:Connect(function(inp)
-    if inp.UserInputType==Enum.UserInputType.MouseButton1 
-        or inp.UserInputType==Enum.UserInputType.Touch then
-        activeSlider = nil
-    end
-end))
-
 local function slider(label,y,min,max,init,cb)
     local lbl=Instance.new("TextLabel",cont)
     lbl.Size=UDim2.new(1,-12,0,14)
@@ -210,6 +180,7 @@ local function slider(label,y,min,max,init,cb)
     tr.Position=UDim2.new(0,6,0,y+16)
     tr.BackgroundColor3=Color3.fromRGB(30,30,45)
     tr.BorderSizePixel=0
+    tr.Name = "SliderTrack"
     Instance.new("UICorner",tr).CornerRadius=UDim.new(0,6)
     
     local trStroke = Instance.new("UIStroke", tr)
@@ -224,6 +195,7 @@ local function slider(label,y,min,max,init,cb)
     fill.BackgroundColor3=Color3.fromRGB(0,200,255)
     fill.BorderSizePixel=0
     Instance.new("UICorner",fill).CornerRadius=UDim.new(0,6)
+    table.insert(ledElements, fill)
 
     local hd2=Instance.new("TextButton",tr)
     hd2.Size=UDim2.new(0,16,0,16)
@@ -237,10 +209,11 @@ local function slider(label,y,min,max,init,cb)
     hdStroke.Color = Color3.fromRGB(0,255,255)
     table.insert(ledElements, hdStroke)
 
+    local isDragging = false
+
     local function updateFromInput(inputX)
         local ta=tr.AbsolutePosition.X
         local tw=tr.AbsoluteSize.X
-        if tw <= 0 then return end
         local r=math.clamp((inputX-ta)/tw,0,1)
         local v=math.floor(min+r*(max-min))
         fill.Size=UDim2.new(r,0,1,0)
@@ -250,17 +223,28 @@ local function slider(label,y,min,max,init,cb)
     end
 
     hd2.InputBegan:Connect(function(inp)
-        if inp.UserInputType==Enum.UserInputType.MouseButton1 
-            or inp.UserInputType==Enum.UserInputType.Touch then
-            activeSlider = updateFromInput
+        if inp.UserInputType==Enum.UserInputType.MouseButton1 or inp.UserInputType==Enum.UserInputType.Touch then
+            isDragging = true
+        end
+    end)
+
+    UIS.InputEnded:Connect(function(inp)
+        if inp.UserInputType==Enum.UserInputType.MouseButton1 or inp.UserInputType==Enum.UserInputType.Touch then
+            if isDragging then isDragging = false end
+        end
+    end)
+
+    RS.RenderStepped:Connect(function()
+        if isDragging then
+            local mousePos = UIS:GetMouseLocation()
+            updateFromInput(mousePos.X)
         end
     end)
 
     tr.InputBegan:Connect(function(inp)
-        if inp.UserInputType==Enum.UserInputType.MouseButton1 
-            or inp.UserInputType==Enum.UserInputType.Touch then
+        if inp.UserInputType==Enum.UserInputType.MouseButton1 or inp.UserInputType==Enum.UserInputType.Touch then
             updateFromInput(inp.Position.X)
-            activeSlider = updateFromInput
+            isDragging = true
         end
     end)
 end
@@ -268,16 +252,18 @@ end
 slider("Toc do bay", 110, 20, 300, 60, function(v) fs=v end)
 slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
--- NUT MO LAI
+-- NUT VIP HINH TRON (KEO DUOC)
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0,15,0,menuY)
+openBtn.Position=UDim2.new(0, 2, 0, 45)
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
 openBtn.Font=Enum.Font.GothamBold
 openBtn.TextSize=11
 openBtn.Visible=false
+openBtn.Active = true
+openBtn.AutoButtonColor = false
 Instance.new("UICorner",openBtn).CornerRadius=UDim.new(1,0)
 local obStroke=Instance.new("UIStroke",openBtn)
 obStroke.Thickness=2
@@ -285,36 +271,44 @@ obStroke.Color=Color3.fromRGB(0,255,255)
 table.insert(ledElements, openBtn)
 table.insert(ledElements, obStroke)
 
--- NUT X / THU GON / MO LAI
-closeBtn.MouseButton1Click:Connect(function()
-    f.Visible = false
-    openBtn.Visible = true
+-- LOGIC KEO NUT VIP
+local openDragging = false
+local openMoved = false
+local openDragStart = nil
+local openStartPos = nil
+
+openBtn.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        openDragging = true
+        openMoved = false
+        openDragStart = input.Position
+        openStartPos = openBtn.Position
+    end
 end)
 
-openBtn.MouseButton1Click:Connect(function()
-    f.Visible = true
-    openBtn.Visible = false
-end)
-
-local collapsed = false
-colBtn.MouseButton1Click:Connect(function()
-    collapsed = not collapsed
-    if collapsed then
-        f.Size = UDim2.new(0,180,0,28)
-        colBtn.Text = "+"
-        for _, obj in ipairs(hide) do
-            if obj:IsA("GuiObject") then obj.Visible = false end
+openBtn.InputChanged:Connect(function(input)
+    if openDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - openDragStart
+        if math.abs(delta.X) > 5 or math.abs(delta.Y) > 5 then
+            openMoved = true
         end
-    else
-        f.Size = UDim2.new(0,180,0,215)
-        colBtn.Text = "-"
-        for _, obj in ipairs(hide) do
-            if obj:IsA("GuiObject") then obj.Visible = true end
+        if openMoved then
+            openBtn.Position = UDim2.new(openStartPos.X.Scale, openStartPos.X.Offset + delta.X, openStartPos.Y.Scale, openStartPos.Y.Offset + delta.Y)
         end
     end
 end)
 
--- NUT BAY LEN / XUONG
+openBtn.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if openDragging and not openMoved then
+            menuOn = true
+            f.Visible = true
+            openBtn.Visible = false
+        end
+        openDragging = false
+    end
+end)
+
 local upBtn=Instance.new("TextButton",g)
 upBtn.Size=UDim2.new(0,44,0,44)
 upBtn.Position=UDim2.new(1,-64,0.5,30)
@@ -344,7 +338,6 @@ dnBtn.MouseButton1Down:Connect(function() dnS=1 end)
 dnBtn.MouseButton1Up:Connect(function() dnS=0 end)
 dnBtn.MouseLeave:Connect(function() dnS=0 end)
 
--- DRAG MENU
 local dragging = false
 local dragStart = nil
 local startPos = nil
@@ -358,8 +351,7 @@ local function isButton(obj)
 end
 
 hd.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 
-        or input.UserInputType == Enum.UserInputType.Touch then
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         if not isButton(input.Target) then
             dragging = true
             dragStart = input.Position
@@ -368,46 +360,34 @@ hd.InputBegan:Connect(function(input)
     end
 end)
 
-track(UIS.InputChanged:Connect(function(input)
-    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement 
-        or input.UserInputType == Enum.UserInputType.Touch) then
+UIS.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         local delta = input.Position - dragStart
-        f.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, 
-                                startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        f.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
-end))
+end)
 
-track(UIS.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 
-        or input.UserInputType == Enum.UserInputType.Touch then
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = false
     end
-end))
+end)
 
--- RAINBOW THROTTLE 20 FPS
-local borderAngle = 0
 local textHue = 0
-local acc = 0
-track(RS.RenderStepped:Connect(function(dt)
-    borderAngle = (borderAngle + dt * 90) % 360
-    borderGrad.Rotation = borderAngle
-
-    acc = acc + dt
-    if acc < 0.05 then return end
-    acc = 0
-
-    textHue = (textHue + 0.015) % 1
+RS.RenderStepped:Connect(function(dt)
+    textHue = (textHue + dt * 0.3) % 1
     local c = Color3.fromHSV(textHue, 0.8, 1)
     for _, obj in ipairs(ledElements) do
         if obj:IsA("TextLabel") or obj:IsA("TextButton") then
             obj.TextColor3 = c
         elseif obj:IsA("UIStroke") then
             obj.Color = c
+        elseif obj:IsA("Frame") then
+            obj.BackgroundColor3 = c
         end
     end
-end))
+end)
 
--- ESP
 local espGuis = {}
 
 local function createESP(pl)
@@ -463,13 +443,14 @@ local function createESP(pl)
     healthText.TextSize = 10
     healthText.Parent = billboard
     
-    espGuis[pl] = {Gui = billboard, Char = char, NameLabel = nameLabel, 
-                   HealthFill = healthFill, HealthText = healthText}
+    espGuis[pl] = {Gui = billboard, Char = char, NameLabel = nameLabel, HealthFill = healthFill, HealthText = healthText}
 end
 
 local function removeESP(pl)
     if espGuis[pl] then
-        if espGuis[pl].Gui then espGuis[pl].Gui:Destroy() end
+        if espGuis[pl].Gui then
+            espGuis[pl].Gui:Destroy()
+        end
         espGuis[pl] = nil
     end
 end
@@ -481,15 +462,16 @@ local function clearESP()
     espGuis = {}
 end
 
-track(P.PlayerRemoving:Connect(removeESP))
+P.PlayerRemoving:Connect(removeESP)
 
 bESP.MouseButton1Click:Connect(function()
     espEnabled = not espEnabled
     set(bESP, espEnabled, "ESP: BAT", "ESP: TAT")
-    if not espEnabled then clearESP() end
+    if not espEnabled then
+        clearESP()
+    end
 end)
 
--- TIM TARGET
 local function findT()
     local vx,vy=cam.ViewportSize.X,cam.ViewportSize.Y
     if vx==0 or vy==0 then vx,vy=1920,1080 end
@@ -511,7 +493,6 @@ local function findT()
     return best
 end
 
--- LOCK ON
 local diedConn=nil
 bLock.MouseButton1Click:Connect(function()
     lock=not lock
@@ -548,7 +529,6 @@ bLock.MouseButton1Click:Connect(function()
     end
 end)
 
--- FLY
 bFly.MouseButton1Click:Connect(function()
     fly=not fly
     local ch=p.Character
@@ -627,8 +607,7 @@ bBack.MouseButton1Click:Connect(function()
     bBack.Text="Ve Diem"
 end)
 
--- MAIN LOOP
-track(RS.RenderStepped:Connect(function()
+RS.RenderStepped:Connect(function()
     local ch=p.Character
     if not ch then return end
     local h=ch:FindFirstChildOfClass("Humanoid")
@@ -698,7 +677,8 @@ track(RS.RenderStepped:Connect(function()
                         local maxHealth = humanoid.MaxHealth
                         local ratio = maxHealth > 0 and (health / maxHealth) or 0
                         data.HealthFill.Size = UDim2.new(ratio, 0, 1, 0)
-                        data.HealthFill.BackgroundColor3 = Color3.fromHSV(ratio * 0.33, 1, 1)
+                        local color = Color3.fromHSV(ratio * 0.33, 1, 1)
+                        data.HealthFill.BackgroundColor3 = color
                         data.HealthText.Text = math.floor(health) .. " / " .. math.floor(maxHealth)
                     end
                 else
@@ -709,12 +689,13 @@ track(RS.RenderStepped:Connect(function()
             end
         end
     else
-        if next(espGuis) then clearESP() end
+        if next(espGuis) then
+            clearESP()
+        end
     end
-end))
+end)
 
--- HEARTBEAT
-track(RS.Heartbeat:Connect(function()
+RS.Heartbeat:Connect(function()
     local ch=p.Character
     if not ch then return end
     local h=ch:FindFirstChildOfClass("Humanoid")
@@ -733,10 +714,9 @@ track(RS.Heartbeat:Connect(function()
     end
 
     if fast then h.WalkSpeed=rs2 else if h.WalkSpeed==rs2 then h.WalkSpeed=16 end end
-end))
+end)
 
--- RESET KHI CHET
-track(p.CharacterAdded:Connect(function(c)
+p.CharacterAdded:Connect(function(c)
     c:WaitForChild("Humanoid")
     local h=c:FindFirstChildOfClass("Humanoid")
     if h then h.PlatformStand=false end
@@ -749,6 +729,6 @@ track(p.CharacterAdded:Connect(function(c)
     goodCam=nil
     upBtn.Visible=false
     dnBtn.Visible=false
-end))
+end)
 
-print("=== OK V8.2 ===")
+print("=== OK V10 ===")
