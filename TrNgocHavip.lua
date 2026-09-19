@@ -1,5 +1,5 @@
--- VIP CYBER V6 - LED 7 MAU + ESP TEN & MAU
-print("=== VIP CYBER V6 ===")
+-- VIP CYBER V7 - LED 7 MAU + ESP + KEO MENU FIX
+print("=== VIP CYBER V7 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -16,7 +16,7 @@ local upS,dnS=0,0
 local lastTp,goodCam=0,nil
 local savedPos=nil
 local menuOn=true
-local espEnabled=false -- Trang thai ESP
+local espEnabled=false
 
 local g=Instance.new("ScreenGui")
 g.Name="VipMenu"
@@ -39,7 +39,7 @@ local ledElements = {}
 -- Khung chinh (Goc trai tren)
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0, 10, 0, 10)
+f.Position=UDim2.new(0, 10, 0, 10) -- Goc trai tren
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -69,12 +69,13 @@ bgGrad.Color = ColorSequence.new({
 })
 bgGrad.Rotation = 45
 
--- Header
+-- Header (De keo menu)
 local hd=Instance.new("Frame",f)
 hd.Size=UDim2.new(1,0,0,28)
 hd.BackgroundColor3=Color3.fromRGB(20,20,40)
 hd.BorderSizePixel=0
 hd.ZIndex=2
+hd.Active = true -- QUAN TRONG: Cho phep nhan su kien keo
 hd.Parent=f
 Instance.new("UICorner",hd).CornerRadius=UDim.new(0,12)
 local hdCover=Instance.new("Frame",hd)
@@ -164,7 +165,6 @@ local function set(b,on,onT,offT)
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- Thanh truot LED
 local function slider(label,y,min,max,init,cb)
     local lbl=Instance.new("TextLabel",cont)
     lbl.Size=UDim2.new(1,-12,0,14)
@@ -255,24 +255,23 @@ end
 slider("Toc do bay", 110, 20, 300, 60, function(v) fs=v end)
 slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
--- Nut mo lai menu
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
 openBtn.Position=UDim2.new(0,10,0,10)
-openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
+openBtn.Background=mColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
-openBtn.TextColor3=Color3.fromRGB(0,255,255)
+openBtnh.TextColor3=Color3.fromRGB(0,255,255)
 openBtn.Font=Enum.Font.GothamBold
-openBtn.TextSize=11
+openBtn.Text endSize=11
 openBtn.Visible=false
 Instance.new("UICorner",openBtn).CornerRadius=UDim.new(1,0)
-local obStroke=Instance.new("UIStroke",openBtn)
+local
+ obStroke=Instance.new("UIStroke",openBtn)
 obStroke.Thickness=2
-obStroke.Color=Color3.fromRGB(0,255,255)
+obStroke.Color=Color3.fromRGB(                   0,255,255)
 table.insert(ledElements, openBtn)
-table.insert(ledElements, obStroke)
+ ttable.insert(ledElements, obStroke)
 
--- Nut len/xuong
 local upBtn=Instance.new("TextButton",g)
 upBtn.Size=UDim2.new(0,44,0,44)
 upBtn.Position=UDim2.new(1,-64,0.5,30)
@@ -302,7 +301,7 @@ dnBtn.MouseButton1Down:Connect(function() dnS=1 end)
 dnBtn.MouseButton1Up:Connect(function() dnS=0 end)
 dnBtn.MouseLeave:Connect(function() dnS=0 end)
 
--- === KEO MENU BANG HEADER ===
+-- === KEO DI CHUYEN MENU ===
 local dragging = false
 local dragStart = nil
 local startPos = nil
@@ -439,7 +438,7 @@ bESP.MouseButton1Click:Connect(function()
     end
 end)
 
--- === LOGIC CU GIU NGUYEN ===
+-- === LOGIC GAME ===
 local function findT()
     local vx,vy=cam.ViewportSize.X,cam.ViewportSize.Y
     if vx==0 or vy==0 then vx,vy=1920,1080 end
@@ -477,8 +476,7 @@ bLock.MouseButton1Click:Connect(function()
                     set(bLock,false,"Lock On: BAT","Lock On: TAT")
                     cam.CameraType=Enum.CameraType.Custom
                     local mh=p.Character and p.Character:FindFirstChildOfClass("Humanoid")
-                    if mh then cam.CameraSubject=mh end
-                    tgt=nil
+                    if mh then cam.CameraSubjectgt=nil
                 end)
                 set(bLock,true,"Lock On: BAT","Lock On: TAT")
                 cam.CameraType=Enum.CameraType.Scriptable
@@ -628,7 +626,6 @@ RS.RenderStepped:Connect(function()
         if rp.Position.Y<-10 and goodCam then cam.CFrame=goodCam end
     end
     
-    -- Cap nhat ESP
     if espEnabled then
         for _, pl in pairs(P:GetPlayers()) do
             if pl ~= p and pl.Character then
@@ -700,4 +697,4 @@ p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end)
 
-print("=== OK V6 ===")
+print("=== OK V7 ===")
