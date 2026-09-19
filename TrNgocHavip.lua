@@ -1,5 +1,5 @@
--- VIP CYBER V8.1 - FIXED
-print("=== VIP CYBER V8.1 ===")
+-- VIP CYBER V8.2 - FULL FIXED
+print("=== VIP CYBER V8.2 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -29,7 +29,6 @@ local tgt,flyBV,flyBG,fs,rs2=nil,nil,nil,60,50
 local upS,dnS=0,0
 local lastTp,goodCam=0,nil
 local savedPos=nil
-local menuOn=true
 local espEnabled=false
 
 local g=Instance.new("ScreenGui")
@@ -49,16 +48,17 @@ local rainbowSeq = ColorSequence.new({
 
 local ledElements = {}
 
--- LAY TOPBAR INSET (chong bi topbar che)
+-- LAY TOPBAR INSET
 local topInset = 36
 pcall(function()
     topInset = GS.TopbarInset.Height
 end)
+local menuY = topInset - 2
 
 -- Khung chinh
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0, 15, 0, topInset + 8)
+f.Position=UDim2.new(0, 15, 0, menuY)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -175,7 +175,7 @@ local function set(b,on,onT,offT)
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- SLIDER (FIX MOBILE)
+-- SLIDER FIX MOBILE
 local activeSlider = nil
 
 track(UIS.InputChanged:Connect(function(inp)
@@ -271,7 +271,7 @@ slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 -- NUT MO LAI
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0,15,0,topInset + 8)
+openBtn.Position=UDim2.new(0,15,0,menuY)
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
@@ -338,9 +338,9 @@ dnBtn.Visible=false
 Instance.new("UICorner",dnBtn).CornerRadius=UDim.new(1,0)
 
 upBtn.MouseButton1Down:Connect(function() upS=1 end)
-upBtn.MouseButton1Up:Connect(function() upS=ouse0 end)
+upBtn.MouseButton1Up:Connect(function() upS=0 end)
 upBtn.MouseLeave:Connect(function() upS=0 end)
-dnBtn.MButton1Down:Connect(function() dnS=1 end)
+dnBtn.MouseButton1Down:Connect(function() dnS=1 end)
 dnBtn.MouseButton1Up:Connect(function() dnS=0 end)
 dnBtn.MouseLeave:Connect(function() dnS=0 end)
 
@@ -384,7 +384,7 @@ track(UIS.InputEnded:Connect(function(input)
     end
 end))
 
--- RAINBOW (THROTTLE 20 FPS)
+-- RAINBOW THROTTLE 20 FPS
 local borderAngle = 0
 local textHue = 0
 local acc = 0
@@ -713,7 +713,7 @@ track(RS.RenderStepped:Connect(function()
     end
 end))
 
--- HEARTBEAT (FLY + FAST)
+-- HEARTBEAT
 track(RS.Heartbeat:Connect(function()
     local ch=p.Character
     if not ch then return end
@@ -751,4 +751,4 @@ track(p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end))
 
-print("=== OK V8.1 ===")
+print("=== OK V8.2 ===")
