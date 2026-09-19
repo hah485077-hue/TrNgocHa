@@ -1,5 +1,5 @@
--- VIP CYBER V14 - SAT LOGO ROBLOX HON
-print("=== VIP CYBER V14 ===")
+-- VIP CYBER V15 - FIX NUT TAT MO MENU
+print("=== VIP CYBER V15 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -35,7 +35,6 @@ local rainbowSeq = ColorSequence.new({
 
 local ledElements = {}
 
--- Đã sửa thành 25 để sát logo Roblox
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
 f.Position=UDim2.new(0, 2, 0, 25)
@@ -114,7 +113,7 @@ closeBtn.Text="X"
 closeBtn.TextColor3=Color3.fromRGB(255,255,255)
 closeBtn.Font=Enum.Font.GothamBold
 closeBtn.TextSize=12
-closeBtn.ZIndex=3
+closeBtn.ZIndex=10
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(1,0)
 
 local cont=Instance.new("Frame",f)
@@ -252,7 +251,7 @@ end
 slider("Toc do bay", 110, 20, 300, 60, function(v) fs=v end)
 slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
--- Nút VIP tròn (đã sửa lên 25)
+-- Nút VIP tròn
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
 openBtn.Position=UDim2.new(0, 2, 0, 25)
@@ -264,6 +263,7 @@ openBtn.TextSize=11
 openBtn.Visible=false
 openBtn.Active = true
 openBtn.AutoButtonColor = false
+openBtn.ZIndex = 10
 Instance.new("UICorner",openBtn).CornerRadius=UDim.new(1,0)
 local obStroke=Instance.new("UIStroke",openBtn)
 obStroke.Thickness=2
@@ -271,6 +271,7 @@ obStroke.Color=Color3.fromRGB(0,255,255)
 table.insert(ledElements, openBtn)
 table.insert(ledElements, obStroke)
 
+-- === KÉO NÚT VIP TRÒN ===
 local openDragging = false
 local openMoved = false
 local openDragStart = nil
@@ -288,7 +289,7 @@ end)
 UIS.InputChanged:Connect(function(input)
     if openDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         local delta = input.Position - openDragStart
-        if math.abs(delta.X) > 5 or math.abs(delta.Y) > 5 then
+        if math.abs(delta.X) > 10 or math.abs(delta.Y) > 10 then
             openMoved = true
         end
         if openMoved then
@@ -299,13 +300,17 @@ end)
 
 UIS.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        if openDragging and not openMoved then
-            menuOn = true
-            f.Visible = true
-            openBtn.Visible = false
-        end
         openDragging = false
     end
+end)
+
+openBtn.MouseButton1Click:Connect(function()
+    if not openMoved then
+        menuOn = true
+        f.Visible = true
+        openBtn.Visible = false
+    end
+    openMoved = false
 end)
 
 local upBtn=Instance.new("TextButton",g)
@@ -385,6 +390,13 @@ RS.RenderStepped:Connect(function(dt)
             obj.BackgroundColor3 = c
         end
     end
+end)
+
+-- Nút X đóng menu
+closeBtn.MouseButton1Click:Connect(function()
+    menuOn = false
+    f.Visible = false
+    openBtn.Visible = true
 end)
 
 local espGuis = {}
@@ -730,4 +742,4 @@ p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end)
 
-print("=== OK V14 ===")
+print("=== OK V15 ===")
