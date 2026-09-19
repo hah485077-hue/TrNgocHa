@@ -36,10 +36,10 @@ local rainbowSeq = ColorSequence.new({
 
 local ledElements = {}
 
--- Khung chinh (Dat len tren cung man hinh)
+-- Khung chinh (Da ha xuong 70, nam duoi thanh Roblox)
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0, 10, 0, 0) -- Da day len tren cung theo y anh
+f.Position=UDim2.new(0, 10, 0, 70)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -252,7 +252,7 @@ slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0,10,0,0)
+openBtn.Position=UDim2.new(0,10,0,70)
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
