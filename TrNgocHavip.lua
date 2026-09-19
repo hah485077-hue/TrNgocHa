@@ -1,5 +1,5 @@
--- VIP CYBER V10 - NUT VIP KEO DUOC + MENU SAT LE TRAI
-print("=== VIP CYBER V10 ===")
+-- VIP CYBER V12 - DA CHINH VI TRI MENU
+print("=== VIP CYBER V12 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -35,10 +35,10 @@ local rainbowSeq = ColorSequence.new({
 
 local ledElements = {}
 
--- Khung chinh menu (Dat sat le trai, cao hon)
+-- Da chinh len cao hon (35 thay vi 45)
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0, 2, 0, 45)
+f.Position=UDim2.new(0, 2, 0, 35)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -252,10 +252,10 @@ end
 slider("Toc do bay", 110, 20, 300, 60, function(v) fs=v end)
 slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
--- NUT VIP HINH TRON (KEO DUOC)
+-- NUT VIP HINH TRON (da chinh len cao hon)
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0, 2, 0, 45)
+openBtn.Position=UDim2.new(0, 2, 0, 35)
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
@@ -271,7 +271,6 @@ obStroke.Color=Color3.fromRGB(0,255,255)
 table.insert(ledElements, openBtn)
 table.insert(ledElements, obStroke)
 
--- LOGIC KEO NUT VIP
 local openDragging = false
 local openMoved = false
 local openDragStart = nil
@@ -286,7 +285,7 @@ openBtn.InputBegan:Connect(function(input)
     end
 end)
 
-openBtn.InputChanged:Connect(function(input)
+UIS.InputChanged:Connect(function(input)
     if openDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         local delta = input.Position - openDragStart
         if math.abs(delta.X) > 5 or math.abs(delta.Y) > 5 then
@@ -298,7 +297,7 @@ openBtn.InputChanged:Connect(function(input)
     end
 end)
 
-openBtn.InputEnded:Connect(function(input)
+UIS.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         if openDragging and not openMoved then
             menuOn = true
@@ -731,4 +730,4 @@ p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end)
 
-print("=== OK V10 ===")
+print("=== OK V12 ===")
