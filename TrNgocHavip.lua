@@ -1,5 +1,5 @@
--- VIP CYBER V15 - FIX NUT TAT MO MENU
-print("=== VIP CYBER V15 ===")
+-- VIP CYBER V16 - DOI VI TRI NUT AN TOAN
+print("=== VIP CYBER V16 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -146,15 +146,17 @@ local function mk(txt,x,y,w)
     return b
 end
 
+-- === COT BEN TRAI ===
 local bLock=mk("Lock On: TAT", 6, 4, 82)
 local bFly=mk("Bay: TAT", 6, 30, 82)
 local bFast=mk("Chay Nhanh: TAT", 6, 56, 82)
-local bNoclip=mk("Xuyen Map: TAT", 6, 82, 82)
+local bTp=mk("Dich Chuyen", 6, 82, 82) -- Da chuyen xuong cuoi ben trai
 
+-- === COT BEN PHAI ===
 local bSave=mk("Luu Diem", 92, 4, 82)
 local bBack=mk("Ve Diem", 92, 30, 82)
-local bTp=mk("Dich Chuyen", 92, 56, 82)
-local bESP=mk("ESP: TAT", 92, 82, 82)
+local bNoclip=mk("Xuyen Map: TAT", 92, 56, 82) -- Da chuyen len hang 3 ben phai
+local bESP=mk("ESP: TAT", 92, 82, 82) -- Van o cuoi ben phai
 
 local function set(b,on,onT,offT)
     b.Text=on and onT or offT
@@ -248,8 +250,9 @@ local function slider(label,y,min,max,init,cb)
     end)
 end
 
-slider("Toc do bay", 110, 20, 300, 60, function(v) fs=v end)
-slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
+-- Doi cho 2 thanh truot
+slider("Toc do chay", 110, 16, 200, 50, function(v) rs2=v end)
+slider("Toc do bay", 142, 20, 300, 60, function(v) fs=v end)
 
 -- Nút VIP tròn
 local openBtn=Instance.new("TextButton",g)
@@ -271,7 +274,6 @@ obStroke.Color=Color3.fromRGB(0,255,255)
 table.insert(ledElements, openBtn)
 table.insert(ledElements, obStroke)
 
--- === KÉO NÚT VIP TRÒN ===
 local openDragging = false
 local openMoved = false
 local openDragStart = nil
@@ -742,4 +744,4 @@ p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end)
 
-print("=== OK V15 ===")
+print("=== OK V16 ===")
