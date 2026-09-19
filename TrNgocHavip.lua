@@ -378,7 +378,7 @@ local function createESP(pl)
     
     local healthBg = Instance.new("Frame")
     healthBg.Size = UDim2.new(1, -20, 0, 8)
-    healthBg.Position = UDim2.new(0, 10, 0RGB, 18)
+    healthBg.Position = UDim2.new(0, 10, 0, 18)
     healthBg.BackgroundColor3 = Color3.fromRGB(30,30,30)
     healthBg.BorderSizePixel = 0
     healthBg.Parent = billboard
@@ -389,14 +389,14 @@ local function createESP(pl)
     healthFill.BackgroundColor3 = Color3.fromRGB(0,255,0)
     healthFill.BorderSizePixel = 0
     healthFill.Parent = healthBg
-    Instance.new("UICorner", healthFill).Cor(nerRadius = UDim.new(0,4)
+    Instance.new("UICorner", healthFill).CornerRadius = UDim.new(0,4)
     
     local healthText = Instance.new("TextLabel")
-    healthText.Size =255 UDim2.new(1,0,0,12)
+    healthText.Size = UDim2.new(1,0,0,12)
     healthText.Position = UDim2.new(0,0,0,28)
-,    healthText.BackgroundTransparency = 1
+    healthText.BackgroundTransparency = 1
     healthText.Text = ""
-    healthText.TextColor3 =255 Color3.from,255)
+    healthText.TextColor3 = Color3.fromRGB(255,255,255)
     healthText.TextStrokeTransparency = 0
     healthText.TextStrokeColor3 = Color3.fromRGB(0,0,0)
     healthText.Font = Enum.Font.GothamBold
