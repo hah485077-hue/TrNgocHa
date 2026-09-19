@@ -1,5 +1,5 @@
--- VIP CYBER V3 - LED 7 MAU + KEO MENU + UI XIN
-print("=== VIP CYBER V3 ===")
+-- VIP CYBER V4 - FULL LED 7 MAU + KEO MENU
+print("=== VIP CYBER V4 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -24,19 +24,21 @@ g.Parent=pg
 
 -- Bang mau cau vong 7 mau
 local rainbowSeq = ColorSequence.new({
-    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255,0,0)),
-    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255,165,0)),
-    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255,255,0)),
-    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0,255,0)),
-    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0,150,255)),
-    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(75,0,180)),
-    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255,0,150)),
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255,0,0)),   -- Do
+    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255,165,0)), -- Cam
+    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255,255,0)), -- Vang
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0,255,0)),   -- Xanh la
+    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0,150,255)), -- Xanh duong
+    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(75,0,180)),  -- Tim
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255,0,150)), -- Hong
 })
+
+local ledElements = {} -- Luu tat ca cac doi tuong can doi mau LED
 
 -- Khung chinh
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0.05,0,0.1,0)
+f.Position=UDim2.new(0.5,-90,0.2,0) -- Bat dau o giua man hinh
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -93,6 +95,7 @@ title.Font=Enum.Font.GothamBold
 title.TextSize=12
 title.ZIndex=3
 title.Parent=hd
+table.insert(ledElements, title)
 
 -- Nut thu gon
 local colBtn=Instance.new("TextButton",hd)
@@ -105,6 +108,7 @@ colBtn.Font=Enum.Font.GothamBold
 colBtn.TextSize=14
 colBtn.ZIndex=3
 Instance.new("UICorner",colBtn).CornerRadius=UDim.new(1,0)
+table.insert(ledElements, colBtn)
 
 -- Nut TAT
 local closeBtn=Instance.new("TextButton",hd)
@@ -144,6 +148,8 @@ local function mk(txt,x,y,w)
     bStroke.Thickness = 1.5
     bStroke.Color = Color3.fromRGB(0,200,255)
     bStroke.Transparency = 0.4
+    table.insert(ledElements, b)
+    table.insert(ledElements, bStroke)
     table.insert(hide,b)
     return b
 end
@@ -173,6 +179,7 @@ local function slider(label,y,min,max,init,cb)
     lbl.Font=Enum.Font.GothamBold
     lbl.TextSize=9
     lbl.TextXAlignment=Enum.TextXAlignment.Left
+    table.insert(ledElements, lbl)
     table.insert(hide,lbl)
 
     local tr=Instance.new("Frame",cont)
@@ -180,11 +187,14 @@ local function slider(label,y,min,max,init,cb)
     tr.Position=UDim2.new(0,6,0,y+16)
     tr.BackgroundColor3=Color3.fromRGB(30,30,45)
     tr.BorderSizePixel=0
+    tr.Name = "SliderTrack" -- Dat ten de phan biet
     Instance.new("UICorner",tr).CornerRadius=UDim.new(0,6)
+    
     local trStroke = Instance.new("UIStroke", tr)
-    trStroke.Thickness = 1.5
+    trStroke.Thickness = 2 -- Day hon chut cho noi bat
     trStroke.Color = Color3.fromRGB(0,200,255)
-    trStroke.Transparency = 0.4
+    trStroke.Transparency = 0.2
+    table.insert(ledElements, trStroke)
     table.insert(hide,tr)
 
     local fill=Instance.new("Frame",tr)
@@ -199,9 +209,11 @@ local function slider(label,y,min,max,init,cb)
     hd2.BackgroundColor3=Color3.fromRGB(255,255,255)
     hd2.Text=""
     Instance.new("UICorner",hd2).CornerRadius=UDim.new(1,0)
+    
     local hdStroke = Instance.new("UIStroke", hd2)
     hdStroke.Thickness = 2
     hdStroke.Color = Color3.fromRGB(0,255,255)
+    table.insert(ledElements, hdStroke)
 
     local isDragging = false
 
@@ -260,6 +272,8 @@ Instance.new("UICorner",openBtn).CornerRadius=UDim.new(1,0)
 local obStroke=Instance.new("UIStroke",openBtn)
 obStroke.Thickness=2
 obStroke.Color=Color3.fromRGB(0,255,255)
+table.insert(ledElements, openBtn)
+table.insert(ledElements, obStroke)
 
 -- Nut len/xuong
 local upBtn=Instance.new("TextButton",g)
@@ -291,14 +305,14 @@ dnBtn.MouseButton1Down:Connect(function() dnS=1 end)
 dnBtn.MouseButton1Up:Connect(function() dnS=0 end)
 dnBtn.MouseLeave:Connect(function() dnS=0 end)
 
--- === KEO DI CHUYEN MENU ===
+-- === KEO DI CHUYEN MENU (FIX LOI) ===
 local dragging = false
 local dragStart = nil
 local startPos = nil
 
-local function isButtonOrSlider(obj)
+local function isInteractive(obj)
     while obj do
-        if obj:IsA("TextButton") or obj:IsA("ImageButton") then return true end
+        if obj:IsA("TextButton") or obj:IsA("ImageButton") or obj.Name == "SliderTrack" then return true end
         obj = obj.Parent
     end
     return false
@@ -306,7 +320,7 @@ end
 
 f.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        if not isButtonOrSlider(input.Target) then
+        if not isInteractive(input.Target) then
             dragging = true
             dragStart = input.Position
             startPos = f.Position
@@ -327,17 +341,16 @@ UIS.InputEnded:Connect(function(input)
     end
 end)
 
--- === CHU LED DOI MAU LIEN TUC ===
+-- === CHU VA VIEN LED DOI MAU LIEN TUC ===
 local textHue = 0
 RS.RenderStepped:Connect(function(dt)
     textHue = (textHue + dt * 0.3) % 1
-    local c = Color3.fromHSV(textHue, 0.7, 1)
-    title.TextColor3 = c
-    for _, child in pairs(cont:GetChildren()) do
-        if child:IsA("TextButton") then
-            child.TextColor3 = c
-        elseif child:IsA("TextLabel") then
-            child.TextColor3 = c
+    local c = Color3.fromHSV(textHue, 0.8, 1)
+    for _, obj in ipairs(ledElements) do
+        if obj:IsA("TextLabel") or obj:IsA("TextButton") then
+            obj.TextColor3 = c
+        elseif obj:IsA("UIStroke") then
+            obj.Color = c
         end
     end
 end)
@@ -595,4 +608,4 @@ p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end)
 
-print("=== OK V3 ===")
+print("=== OK V4 ===")
