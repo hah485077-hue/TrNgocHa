@@ -1,5 +1,5 @@
--- VIP CYBER - BAN NGAN GON (2 COT) - FIX LOI SLIDER + LED 7 MAU
-print("=== VIP CYBER ===")
+-- VIP CYBER V3 - LED 7 MAU + KEO MENU + UI XIN
+print("=== VIP CYBER V3 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -22,121 +22,169 @@ g.Name="VipMenu"
 g.ResetOnSpawn=false
 g.Parent=pg
 
+-- Bang mau cau vong 7 mau
+local rainbowSeq = ColorSequence.new({
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255,0,0)),
+    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255,165,0)),
+    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255,255,0)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0,255,0)),
+    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0,150,255)),
+    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(75,0,180)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255,0,150)),
+})
+
+-- Khung chinh
 local f=Instance.new("Frame",g)
-f.Size=UDim2.new(0,170,0,190)
-f.Position=UDim2.new(0,10,0,10)
-f.BackgroundColor3=Color3.fromRGB(15,15,25)
+f.Size=UDim2.new(0,180,0,215)
+f.Position=UDim2.new(0.05,0,0.1,0)
+f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
-Instance.new("UICorner",f).CornerRadius=UDim.new(0,10)
+f.ZIndex=1
+Instance.new("UICorner",f).CornerRadius=UDim.new(0,12)
 
--- VIEN LED 7 MAU (DAY HON)
-local ms=Instance.new("UIStroke",f)
-ms.Thickness=5 -- Do day cua vien
-ms.Color=Color3.fromRGB(0,200,255)
+-- VIEN LED 7 MAU (Frame nam phia sau, to hon de lo ra vien)
+local borderFrame = Instance.new("Frame", f)
+borderFrame.Size = UDim2.new(1, 10, 1, 10)
+borderFrame.Position = UDim2.new(0, -5, 0, -5)
+borderFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
+borderFrame.BorderSizePixel = 0
+borderFrame.ZIndex = 0
+Instance.new("UICorner", borderFrame).CornerRadius = UDim.new(0, 16)
+local borderGrad = Instance.new("UIGradient", borderFrame)
+borderGrad.Color = rainbowSeq
 
--- Hieu ung LED 7 mau chay
-local hue = 0
+-- Quay vien LED 7 mau chay vong quanh
+local borderAngle = 0
 RS.RenderStepped:Connect(function(dt)
-    hue = (hue + dt * 0.5) % 1 -- Toc do chay cua mau
-    ms.Color = Color3.fromHSV(hue, 1, 1)
+    borderAngle = (borderAngle + dt * 90) % 360
+    borderGrad.Rotation = borderAngle
 end)
 
+-- Nen gradient cho khung chinh
+local bgGrad = Instance.new("UIGradient", f)
+bgGrad.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(20,20,40)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(8,8,15)),
+})
+bgGrad.Rotation = 45
+
+-- Header
 local hd=Instance.new("Frame",f)
-hd.Size=UDim2.new(1,0,0,24)
-hd.BackgroundColor3=Color3.fromRGB(30,30,50)
+hd.Size=UDim2.new(1,0,0,28)
+hd.BackgroundColor3=Color3.fromRGB(20,20,40)
 hd.BorderSizePixel=0
 hd.ZIndex=2
 hd.Parent=f
-Instance.new("UICorner",hd).CornerRadius=UDim.new(0,10)
+Instance.new("UICorner",hd).CornerRadius=UDim.new(0,12)
+local hdCover=Instance.new("Frame",hd)
+hdCover.Size=UDim2.new(1,0,0.5,0)
+hdCover.Position=UDim2.new(0,0,0.5,0)
+hdCover.BackgroundColor3=Color3.fromRGB(20,20,40)
+hdCover.BorderSizePixel=0
+hdCover.ZIndex=2
+hdCover.Parent=hd
 
 local title=Instance.new("TextLabel",hd)
-title.Size=UDim2.new(1,-52,1,0)
+title.Size=UDim2.new(1,-56,1,0)
 title.BackgroundTransparency=1
 title.Text="VIP CYBER"
 title.TextColor3=Color3.fromRGB(0,255,255)
 title.Font=Enum.Font.GothamBold
-title.TextSize=11
+title.TextSize=12
 title.ZIndex=3
 title.Parent=hd
 
+-- Nut thu gon
 local colBtn=Instance.new("TextButton",hd)
-colBtn.Size=UDim2.new(0,20,0,20)
-colBtn.Position=UDim2.new(1,-46,0,2)
-colBtn.BackgroundColor3=Color3.fromRGB(40,45,60)
+colBtn.Size=UDim2.new(0,22,0,22)
+colBtn.Position=UDim2.new(1,-52,0,3)
+colBtn.BackgroundColor3=Color3.fromRGB(35,40,60)
 colBtn.Text="-"
 colBtn.TextColor3=Color3.fromRGB(255,255,255)
 colBtn.Font=Enum.Font.GothamBold
-colBtn.TextSize=12
+colBtn.TextSize=14
 colBtn.ZIndex=3
 Instance.new("UICorner",colBtn).CornerRadius=UDim.new(1,0)
 
+-- Nut TAT
 local closeBtn=Instance.new("TextButton",hd)
-closeBtn.Size=UDim2.new(0,20,0,20)
-closeBtn.Position=UDim2.new(1,-24,0,2)
-closeBtn.BackgroundColor3=Color3.fromRGB(150,40,40)
+closeBtn.Size=UDim2.new(0,22,0,22)
+closeBtn.Position=UDim2.new(1,-27,0,3)
+closeBtn.BackgroundColor3=Color3.fromRGB(180,40,40)
 closeBtn.Text="X"
 closeBtn.TextColor3=Color3.fromRGB(255,255,255)
 closeBtn.Font=Enum.Font.GothamBold
-closeBtn.TextSize=11
+closeBtn.TextSize=12
 closeBtn.ZIndex=3
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(1,0)
 
+-- Container
 local cont=Instance.new("Frame",f)
-cont.Size=UDim2.new(1,0,1,-24)
-cont.Position=UDim2.new(0,0,0,24)
+cont.Size=UDim2.new(1,0,1,-28)
+cont.Position=UDim2.new(0,0,0,28)
 cont.BackgroundTransparency=1
 cont.Parent=f
 
 local hide={}
 
+-- Ham tao nut co vien LED
 local function mk(txt,x,y,w)
     local b=Instance.new("TextButton",cont)
-    b.Size=UDim2.new(0,w,0,20)
+    b.Size=UDim2.new(0,w,0,22)
     b.Position=UDim2.new(0,x,0,y)
-    b.BackgroundColor3=Color3.fromRGB(45,45,65)
+    b.BackgroundColor3=Color3.fromRGB(35,35,55)
     b.Text=txt
-    b.TextColor3=Color3.fromRGB(255,255,255)
+    b.TextColor3=Color3.fromRGB(0,255,255)
     b.Font=Enum.Font.GothamBold
     b.TextSize=9
+    b.TextWrapped=true
     b.Parent=cont
-    Instance.new("UICorner",b).CornerRadius=UDim.new(0,5)
+    Instance.new("UICorner",b).CornerRadius=UDim.new(0,6)
+    local bStroke = Instance.new("UIStroke", b)
+    bStroke.Thickness = 1.5
+    bStroke.Color = Color3.fromRGB(0,200,255)
+    bStroke.Transparency = 0.4
     table.insert(hide,b)
     return b
 end
 
-local bLock=mk("Lock On: TAT", 6, 4, 75)
-local bFly=mk("Bay: TAT", 6, 26, 75)
-local bFast=mk("Chay Nhanh: TAT", 6, 48, 75)
-local bNoclip=mk("Xuyen Map: TAT", 6, 70, 75)
+local bLock=mk("Lock On: TAT", 6, 4, 82)
+local bFly=mk("Bay: TAT", 6, 30, 82)
+local bFast=mk("Chay Nhanh: TAT", 6, 56, 82)
+local bNoclip=mk("Xuyen Map: TAT", 6, 82, 82)
 
-local bSave=mk("Luu Diem", 87, 4, 75)
-local bBack=mk("Ve Diem", 87, 26, 75)
-local bTp=mk("Dich Chuyen", 87, 48, 75)
+local bSave=mk("Luu Diem", 92, 4, 82)
+local bBack=mk("Ve Diem", 92, 30, 82)
+local bTp=mk("Dich Chuyen", 92, 56, 82)
 
 local function set(b,on,onT,offT)
     b.Text=on and onT or offT
-    b.BackgroundColor3=on and Color3.fromRGB(0,140,0) or Color3.fromRGB(45,45,65)
+    b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- Thanh truot (Slider) DA FIX LOI
+-- Thanh truot co vien LED
 local function slider(label,y,min,max,init,cb)
     local lbl=Instance.new("TextLabel",cont)
-    lbl.Size=UDim2.new(1,-12,0,12)
+    lbl.Size=UDim2.new(1,-12,0,14)
     lbl.Position=UDim2.new(0,6,0,y)
     lbl.BackgroundTransparency=1
     lbl.Text=label..": "..init
-    lbl.TextColor3=Color3.fromRGB(200,200,200)
+    lbl.TextColor3=Color3.fromRGB(0,255,255)
     lbl.Font=Enum.Font.GothamBold
-    lbl.TextSize=8
+    lbl.TextSize=9
     lbl.TextXAlignment=Enum.TextXAlignment.Left
     table.insert(hide,lbl)
 
     local tr=Instance.new("Frame",cont)
     tr.Size=UDim2.new(1,-12,0,12)
-    tr.Position=UDim2.new(0,6,0,y+14)
-    tr.BackgroundColor3=Color3.fromRGB(40,40,55)
+    tr.Position=UDim2.new(0,6,0,y+16)
+    tr.BackgroundColor3=Color3.fromRGB(30,30,45)
     tr.BorderSizePixel=0
     Instance.new("UICorner",tr).CornerRadius=UDim.new(0,6)
+    local trStroke = Instance.new("UIStroke", tr)
+    trStroke.Thickness = 1.5
+    trStroke.Color = Color3.fromRGB(0,200,255)
+    trStroke.Transparency = 0.4
     table.insert(hide,tr)
 
     local fill=Instance.new("Frame",tr)
@@ -151,6 +199,9 @@ local function slider(label,y,min,max,init,cb)
     hd2.BackgroundColor3=Color3.fromRGB(255,255,255)
     hd2.Text=""
     Instance.new("UICorner",hd2).CornerRadius=UDim.new(1,0)
+    local hdStroke = Instance.new("UIStroke", hd2)
+    hdStroke.Thickness = 2
+    hdStroke.Color = Color3.fromRGB(0,255,255)
 
     local isDragging = false
 
@@ -173,9 +224,7 @@ local function slider(label,y,min,max,init,cb)
 
     UIS.InputEnded:Connect(function(inp)
         if inp.UserInputType==Enum.UserInputType.MouseButton1 or inp.UserInputType==Enum.UserInputType.Touch then
-            if isDragging then
-                isDragging = false
-            end
+            if isDragging then isDragging = false end
         end
     end)
 
@@ -194,13 +243,14 @@ local function slider(label,y,min,max,init,cb)
     end)
 end
 
-slider("Toc do bay", 96, 20, 300, 60, function(v) fs=v end)
-slider("Toc do chay", 122, 16, 200, 50, function(v) rs2=v end)
+slider("Toc do bay", 110, 20, 300, 60, function(v) fs=v end)
+slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
+-- Nut mo lai menu
 local openBtn=Instance.new("TextButton",g)
-openBtn.Size=UDim2.new(0,40,0,40)
+openBtn.Size=UDim2.new(0,44,0,44)
 openBtn.Position=UDim2.new(0,10,0,10)
-openBtn.BackgroundColor3=Color3.fromRGB(30,30,50)
+openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
 openBtn.Font=Enum.Font.GothamBold
@@ -211,25 +261,26 @@ local obStroke=Instance.new("UIStroke",openBtn)
 obStroke.Thickness=2
 obStroke.Color=Color3.fromRGB(0,255,255)
 
+-- Nut len/xuong
 local upBtn=Instance.new("TextButton",g)
-upBtn.Size=UDim2.new(0,40,0,40)
-upBtn.Position=UDim2.new(1,-60,0.5,30)
+upBtn.Size=UDim2.new(0,44,0,44)
+upBtn.Position=UDim2.new(1,-64,0.5,30)
 upBtn.BackgroundColor3=Color3.fromRGB(0,150,0)
 upBtn.Text="^"
 upBtn.TextColor3=Color3.fromRGB(255,255,255)
 upBtn.Font=Enum.Font.GothamBold
-upBtn.TextSize=18
+upBtn.TextSize=20
 upBtn.Visible=false
 Instance.new("UICorner",upBtn).CornerRadius=UDim.new(1,0)
 
 local dnBtn=Instance.new("TextButton",g)
-dnBtn.Size=UDim2.new(0,40,0,40)
-dnBtn.Position=UDim2.new(1,-60,0.5,80)
+dnBtn.Size=UDim2.new(0,44,0,44)
+dnBtn.Position=UDim2.new(1,-64,0.5,84)
 dnBtn.BackgroundColor3=Color3.fromRGB(150,0,0)
 dnBtn.Text="v"
 dnBtn.TextColor3=Color3.fromRGB(255,255,255)
 dnBtn.Font=Enum.Font.GothamBold
-dnBtn.TextSize=18
+dnBtn.TextSize=20
 dnBtn.Visible=false
 Instance.new("UICorner",dnBtn).CornerRadius=UDim.new(1,0)
 
@@ -240,30 +291,85 @@ dnBtn.MouseButton1Down:Connect(function() dnS=1 end)
 dnBtn.MouseButton1Up:Connect(function() dnS=0 end)
 dnBtn.MouseLeave:Connect(function() dnS=0 end)
 
-colBtn.MouseButton1Click:Connect(function()
-    if f.Size.Y.Offset>24 then
-        f.Size=UDim2.new(0,170,0,24)
-        for _,e in pairs(hide) do e.Visible=false end
-        colBtn.Text="+"
-    else
-        f.Size=UDim2.new(0,170,0,190)
-        for _,e in pairs(hide) do e.Visible=true end
-        colBtn.Text="-"
+-- === KEO DI CHUYEN MENU ===
+local dragging = false
+local dragStart = nil
+local startPos = nil
+
+local function isButtonOrSlider(obj)
+    while obj do
+        if obj:IsA("TextButton") or obj:IsA("ImageButton") then return true end
+        obj = obj.Parent
+    end
+    return false
+end
+
+f.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        if not isButtonOrSlider(input.Target) then
+            dragging = true
+            dragStart = input.Position
+            startPos = f.Position
+        end
     end
 end)
 
+UIS.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        f.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+-- === CHU LED DOI MAU LIEN TUC ===
+local textHue = 0
+RS.RenderStepped:Connect(function(dt)
+    textHue = (textHue + dt * 0.3) % 1
+    local c = Color3.fromHSV(textHue, 0.7, 1)
+    title.TextColor3 = c
+    for _, child in pairs(cont:GetChildren()) do
+        if child:IsA("TextButton") then
+            child.TextColor3 = c
+        elseif child:IsA("TextLabel") then
+            child.TextColor3 = c
+        end
+    end
+end)
+
+-- Thu gon
+colBtn.MouseButton1Click:Connect(function()
+    if f.Size.Y.Offset > 28 then
+        f.Size = UDim2.new(0, 180, 0, 28)
+        for _, e in pairs(hide) do e.Visible = false end
+        colBtn.Text = "+"
+    else
+        f.Size = UDim2.new(0, 180, 0, 215)
+        for _, e in pairs(hide) do e.Visible = true end
+        colBtn.Text = "-"
+    end
+end)
+
+-- Tat menu
 closeBtn.MouseButton1Click:Connect(function()
-    menuOn=false
-    f.Visible=false
-    openBtn.Visible=true
+    menuOn = false
+    f.Visible = false
+    openBtn.Visible = true
 end)
 
+-- Mo lai
 openBtn.MouseButton1Click:Connect(function()
-    menuOn=true
-    f.Visible=true
-    openBtn.Visible=false
+    menuOn = true
+    f.Visible = true
+    openBtn.Visible = false
 end)
 
+-- === LOGIC CU GIU NGUYEN ===
 local function findT()
     local vx,vy=cam.ViewportSize.X,cam.ViewportSize.Y
     if vx==0 or vy==0 then vx,vy=1920,1080 end
@@ -432,9 +538,9 @@ RS.RenderStepped:Connect(function()
         rp.AssemblyLinearVelocity=Vector3.new(0,0,0)
     end
 
-    if rp.Position.Y>-10 then goodCam==cam.CFrame end
+    if rp.Position.Y>-10 then goodCam=cam.CFrame end
 
-    if lockVector and tgt and tgt.R3oot and tgt.Root.Parent.new then
+    if lock and tgt and tgt.Root and tgt.Root.Parent then
         local myPos=rp.Position
         local targetPos=tgt.Root.Position
         local hd=Vector3.new(targetPos.X-myPos.X,0,targetPos.Z-myPos.Z)
@@ -463,7 +569,7 @@ RS.Heartbeat:Connect(function()
     if fly and flyBV and flyBG then
         if not h.PlatformStand then h.PlatformStand=true end
         local md=h.MoveDirection
-        local hm(md.X,0,md.Z)
+        local hm=Vector3.new(md.X,0,md.Z)
         if hm.Magnitude>0 then hm=hm.Unit*fs end
         local u=(upS==1 or UIS:IsKeyDown(Enum.KeyCode.Space)) and fs or 0
         local d=(dnS==1 or UIS:IsKeyDown(Enum.KeyCode.LeftControl)) and fs or 0
@@ -489,4 +595,4 @@ p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end)
 
-print("=== OK ===")
+print("=== OK V3 ===")
