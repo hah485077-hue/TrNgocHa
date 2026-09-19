@@ -1,5 +1,5 @@
--- VIP CYBER V16.4 - GITHUB READY
-print("=== VIP CYBER V16.4 ===")
+-- VIP CYBER V16.6 - GITHUB READY
+print("=== VIP CYBER V16.6 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -7,7 +7,6 @@ local p=P.LocalPlayer
 local pg=p:WaitForChild("PlayerGui")
 local cam=workspace.CurrentCamera
 
--- CLEANUP SCRIPT CU
 if _G.__VIP_CYBER_CLEANUP then pcall(_G.__VIP_CYBER_CLEANUP) end
 local conns = {}
 local function track(c) table.insert(conns, c); return c end
@@ -46,7 +45,7 @@ local rainbowSeq = ColorSequence.new({
 local ledElements = {}
 
 local f=Instance.new("Frame",g)
-f.Size=UDim2.new(0,180,0,215)
+f.Size=UDim2.new(0,180,0,235)
 f.Position=UDim2.new(0, 2, 0, 25)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
@@ -165,17 +164,19 @@ local function mk(txt,x,y,w)
     return b
 end
 
--- COT BEN TRAI
+-- COT BEN TRAI (3 nut dau)
 local bLock=mk("Lock On: TAT", 6, 4, 82)
 local bFast=mk("Chay Nhanh: TAT", 6, 30, 82)
 local bFly=mk("Bay: TAT", 6, 56, 82)
-local bTp=mk("Dich Chuyen", 6, 82, 82)
 
--- COT BEN PHAI
+-- COT BEN PHAI (3 nut dau)
 local bSave=mk("Luu Diem", 92, 4, 82)
 local bBack=mk("Ve Diem", 92, 30, 82)
 local bNoclip=mk("Xuyen Map: TAT", 92, 56, 82)
-local bESP=mk("ESP: TAT", 92, 82, 82)
+
+-- 2 NUT CUOI CUNG (Dich Chuyen trai, ESP phai)
+local bTp=mk("Dich Chuyen", 6, 158, 82)
+local bESP=mk("ESP: TAT", 92, 158, 82)
 
 local function set(b,on,onT,offT)
     b.Text=on and onT or offT
@@ -273,8 +274,9 @@ local function slider(label,y,min,max,init,cb)
     end)
 end
 
-slider("Toc do chay", 110, 16, 200, 50, function(v) rs2=v end)
-slider("Toc do bay", 142, 20, 300, 60, function(v) fs=v end)
+-- 2 thanh truot nam giua (duoi 3 nut, tren 2 nut cuoi)
+slider("Toc do chay", 86, 16, 200, 50, function(v) rs2=v end)
+slider("Toc do bay", 122, 20, 300, 60, function(v) fs=v end)
 
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
@@ -425,7 +427,7 @@ colBtn.MouseButton1Click:Connect(function()
             if obj:IsA("GuiObject") then obj.Visible = false end
         end
     else
-        f.Size = UDim2.new(0,180,0,215)
+        f.Size = UDim2.new(0,180,0,235)
         colBtn.Text = "-"
         for _, obj in ipairs(hide) do
             if obj:IsA("GuiObject") then obj.Visible = true end
@@ -770,4 +772,4 @@ track(p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end))
 
-print("=== OK V16.4 ===")
+print("=== OK V16.6 ===")
