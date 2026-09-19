@@ -1,5 +1,5 @@
--- VIP CYBER V4 - FULL LED 7 MAU + KEO MENU
-print("=== VIP CYBER V4 ===")
+-- VIP CYBER V6 - LED 7 MAU + ESP TEN & MAU
+print("=== VIP CYBER V6 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -16,6 +16,7 @@ local upS,dnS=0,0
 local lastTp,goodCam=0,nil
 local savedPos=nil
 local menuOn=true
+local espEnabled=false -- Trang thai ESP
 
 local g=Instance.new("ScreenGui")
 g.Name="VipMenu"
@@ -24,27 +25,27 @@ g.Parent=pg
 
 -- Bang mau cau vong 7 mau
 local rainbowSeq = ColorSequence.new({
-    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255,0,0)),   -- Do
-    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255,165,0)), -- Cam
-    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255,255,0)), -- Vang
-    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0,255,0)),   -- Xanh la
-    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0,150,255)), -- Xanh duong
-    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(75,0,180)),  -- Tim
-    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255,0,150)), -- Hong
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255,0,0)),
+    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255,165,0)),
+    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255,255,0)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0,255,0)),
+    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0,150,255)),
+    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(75,0,180)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255,0,150)),
 })
 
-local ledElements = {} -- Luu tat ca cac doi tuong can doi mau LED
+local ledElements = {}
 
--- Khung chinh
+-- Khung chinh (Goc trai tren)
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0.5,-90,0.2,0) -- Bat dau o giua man hinh
+f.Position=UDim2.new(0, 10, 0, 10)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
 Instance.new("UICorner",f).CornerRadius=UDim.new(0,12)
 
--- VIEN LED 7 MAU (Frame nam phia sau, to hon de lo ra vien)
+-- VIEN LED 7 MAU
 local borderFrame = Instance.new("Frame", f)
 borderFrame.Size = UDim2.new(1, 10, 1, 10)
 borderFrame.Position = UDim2.new(0, -5, 0, -5)
@@ -55,14 +56,12 @@ Instance.new("UICorner", borderFrame).CornerRadius = UDim.new(0, 16)
 local borderGrad = Instance.new("UIGradient", borderFrame)
 borderGrad.Color = rainbowSeq
 
--- Quay vien LED 7 mau chay vong quanh
 local borderAngle = 0
 RS.RenderStepped:Connect(function(dt)
     borderAngle = (borderAngle + dt * 90) % 360
     borderGrad.Rotation = borderAngle
 end)
 
--- Nen gradient cho khung chinh
 local bgGrad = Instance.new("UIGradient", f)
 bgGrad.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, Color3.fromRGB(20,20,40)),
@@ -97,7 +96,6 @@ title.ZIndex=3
 title.Parent=hd
 table.insert(ledElements, title)
 
--- Nut thu gon
 local colBtn=Instance.new("TextButton",hd)
 colBtn.Size=UDim2.new(0,22,0,22)
 colBtn.Position=UDim2.new(1,-52,0,3)
@@ -110,7 +108,6 @@ colBtn.ZIndex=3
 Instance.new("UICorner",colBtn).CornerRadius=UDim.new(1,0)
 table.insert(ledElements, colBtn)
 
--- Nut TAT
 local closeBtn=Instance.new("TextButton",hd)
 closeBtn.Size=UDim2.new(0,22,0,22)
 closeBtn.Position=UDim2.new(1,-27,0,3)
@@ -122,7 +119,6 @@ closeBtn.TextSize=12
 closeBtn.ZIndex=3
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(1,0)
 
--- Container
 local cont=Instance.new("Frame",f)
 cont.Size=UDim2.new(1,0,1,-28)
 cont.Position=UDim2.new(0,0,0,28)
@@ -131,7 +127,6 @@ cont.Parent=f
 
 local hide={}
 
--- Ham tao nut co vien LED
 local function mk(txt,x,y,w)
     local b=Instance.new("TextButton",cont)
     b.Size=UDim2.new(0,w,0,22)
@@ -162,13 +157,14 @@ local bNoclip=mk("Xuyen Map: TAT", 6, 82, 82)
 local bSave=mk("Luu Diem", 92, 4, 82)
 local bBack=mk("Ve Diem", 92, 30, 82)
 local bTp=mk("Dich Chuyen", 92, 56, 82)
+local bESP=mk("ESP: TAT", 92, 82, 82)
 
 local function set(b,on,onT,offT)
     b.Text=on and onT or offT
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- Thanh truot co vien LED
+-- Thanh truot LED
 local function slider(label,y,min,max,init,cb)
     local lbl=Instance.new("TextLabel",cont)
     lbl.Size=UDim2.new(1,-12,0,14)
@@ -187,11 +183,11 @@ local function slider(label,y,min,max,init,cb)
     tr.Position=UDim2.new(0,6,0,y+16)
     tr.BackgroundColor3=Color3.fromRGB(30,30,45)
     tr.BorderSizePixel=0
-    tr.Name = "SliderTrack" -- Dat ten de phan biet
+    tr.Name = "SliderTrack"
     Instance.new("UICorner",tr).CornerRadius=UDim.new(0,6)
     
     local trStroke = Instance.new("UIStroke", tr)
-    trStroke.Thickness = 2 -- Day hon chut cho noi bat
+    trStroke.Thickness = 2
     trStroke.Color = Color3.fromRGB(0,200,255)
     trStroke.Transparency = 0.2
     table.insert(ledElements, trStroke)
@@ -202,6 +198,7 @@ local function slider(label,y,min,max,init,cb)
     fill.BackgroundColor3=Color3.fromRGB(0,200,255)
     fill.BorderSizePixel=0
     Instance.new("UICorner",fill).CornerRadius=UDim.new(0,6)
+    table.insert(ledElements, fill)
 
     local hd2=Instance.new("TextButton",tr)
     hd2.Size=UDim2.new(0,16,0,16)
@@ -305,22 +302,22 @@ dnBtn.MouseButton1Down:Connect(function() dnS=1 end)
 dnBtn.MouseButton1Up:Connect(function() dnS=0 end)
 dnBtn.MouseLeave:Connect(function() dnS=0 end)
 
--- === KEO DI CHUYEN MENU (FIX LOI) ===
+-- === KEO MENU BANG HEADER ===
 local dragging = false
 local dragStart = nil
 local startPos = nil
 
-local function isInteractive(obj)
+local function isButton(obj)
     while obj do
-        if obj:IsA("TextButton") or obj:IsA("ImageButton") or obj.Name == "SliderTrack" then return true end
+        if obj:IsA("TextButton") or obj:IsA("ImageButton") then return true end
         obj = obj.Parent
     end
     return false
 end
 
-f.InputBegan:Connect(function(input)
+hd.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        if not isInteractive(input.Target) then
+        if not isButton(input.Target) then
             dragging = true
             dragStart = input.Position
             startPos = f.Position
@@ -341,7 +338,7 @@ UIS.InputEnded:Connect(function(input)
     end
 end)
 
--- === CHU VA VIEN LED DOI MAU LIEN TUC ===
+-- === LED DOI MAU LIEN TUC ===
 local textHue = 0
 RS.RenderStepped:Connect(function(dt)
     textHue = (textHue + dt * 0.3) % 1
@@ -351,35 +348,95 @@ RS.RenderStepped:Connect(function(dt)
             obj.TextColor3 = c
         elseif obj:IsA("UIStroke") then
             obj.Color = c
+        elseif obj:IsA("Frame") then
+            obj.BackgroundColor3 = c
         end
     end
 end)
 
--- Thu gon
-colBtn.MouseButton1Click:Connect(function()
-    if f.Size.Y.Offset > 28 then
-        f.Size = UDim2.new(0, 180, 0, 28)
-        for _, e in pairs(hide) do e.Visible = false end
-        colBtn.Text = "+"
-    else
-        f.Size = UDim2.new(0, 180, 0, 215)
-        for _, e in pairs(hide) do e.Visible = true end
-        colBtn.Text = "-"
+-- === ESP: TEN & MAU ===
+local espGuis = {}
+
+local function createESP(pl)
+    local char = pl.Character
+    if not char then return end
+    local head = char:FindFirstChild("Head")
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    if not head or not humanoid then return end
+    
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "ESP_"..pl.Name
+    billboard.Size = UDim2.new(0, 120, 0, 45)
+    billboard.StudsOffset = Vector3.new(0, 2.5, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Adornee = head
+    billboard.Parent = head
+    
+    local nameLabel = Instance.new("TextLabel")
+    nameLabel.Size = UDim2.new(1,0,0,16)
+    nameLabel.BackgroundTransparency = 1
+    nameLabel.Text = pl.Name
+    nameLabel.TextColor3 = Color3.fromRGB(0,255,255)
+    nameLabel.TextStrokeTransparency = 0
+    nameLabel.TextStrokeColor3 = Color3.fromRGB(0,0,0)
+    nameLabel.Font = Enum.Font.GothamBold
+    nameLabel.TextSize = 12
+    nameLabel.Parent = billboard
+    
+    local healthBg = Instance.new("Frame")
+    healthBg.Size = UDim2.new(1, -20, 0, 8)
+    healthBg.Position = UDim2.new(0, 10, 0, 18)
+    healthBg.BackgroundColor3 = Color3.fromRGB(30,30,30)
+    healthBg.BorderSizePixel = 0
+    healthBg.Parent = billboard
+    Instance.new("UICorner", healthBg).CornerRadius = UDim.new(0,4)
+    
+    local healthFill = Instance.new("Frame")
+    healthFill.Size = UDim2.new(1,0,1,0)
+    healthFill.BackgroundColor3 = Color3.fromRGB(0,255,0)
+    healthFill.BorderSizePixel = 0
+    healthFill.Parent = healthBg
+    Instance.new("UICorner", healthFill).CornerRadius = UDim.new(0,4)
+    
+    local healthText = Instance.new("TextLabel")
+    healthText.Size = UDim2.new(1,0,0,12)
+    healthText.Position = UDim2.new(0,0,0,28)
+    healthText.BackgroundTransparency = 1
+    healthText.Text = ""
+    healthText.TextColor3 = Color3.fromRGB(255,255,255)
+    healthText.TextStrokeTransparency = 0
+    healthText.TextStrokeColor3 = Color3.fromRGB(0,0,0)
+    healthText.Font = Enum.Font.GothamBold
+    healthText.TextSize = 10
+    healthText.Parent = billboard
+    
+    espGuis[pl] = {Gui = billboard, Char = char, NameLabel = nameLabel, HealthFill = healthFill, HealthText = healthText}
+end
+
+local function removeESP(pl)
+    if espGuis[pl] then
+        if espGuis[pl].Gui then
+            espGuis[pl].Gui:Destroy()
+        end
+        espGuis[pl] = nil
     end
-end)
+end
 
--- Tat menu
-closeBtn.MouseButton1Click:Connect(function()
-    menuOn = false
-    f.Visible = false
-    openBtn.Visible = true
-end)
+local function clearESP()
+    for pl, data in pairs(espGuis) do
+        if data.Gui then data.Gui:Destroy() end
+    end
+    espGuis = {}
+end
 
--- Mo lai
-openBtn.MouseButton1Click:Connect(function()
-    menuOn = true
-    f.Visible = true
-    openBtn.Visible = false
+P.PlayerRemoving:Connect(removeESP)
+
+bESP.MouseButton1Click:Connect(function()
+    espEnabled = not espEnabled
+    set(bESP, espEnabled, "ESP: BAT", "ESP: TAT")
+    if not espEnabled then
+        clearESP()
+    end
 end)
 
 -- === LOGIC CU GIU NGUYEN ===
@@ -570,6 +627,41 @@ RS.RenderStepped:Connect(function()
     else
         if rp.Position.Y<-10 and goodCam then cam.CFrame=goodCam end
     end
+    
+    -- Cap nhat ESP
+    if espEnabled then
+        for _, pl in pairs(P:GetPlayers()) do
+            if pl ~= p and pl.Character then
+                local char = pl.Character
+                local humanoid = char:FindFirstChildOfClass("Humanoid")
+                local head = char:FindFirstChild("Head")
+                if humanoid and head then
+                    if not espGuis[pl] or espGuis[pl].Char ~= char then
+                        removeESP(pl)
+                        createESP(pl)
+                    end
+                    local data = espGuis[pl]
+                    if data then
+                        local health = humanoid.Health
+                        local maxHealth = humanoid.MaxHealth
+                        local ratio = maxHealth > 0 and (health / maxHealth) or 0
+                        data.HealthFill.Size = UDim2.new(ratio, 0, 1, 0)
+                        local color = Color3.fromHSV(ratio * 0.33, 1, 1)
+                        data.HealthFill.BackgroundColor3 = color
+                        data.HealthText.Text = math.floor(health) .. " / " .. math.floor(maxHealth)
+                    end
+                else
+                    removeESP(pl)
+                end
+            else
+                removeESP(pl)
+            end
+        end
+    else
+        if next(espGuis) then
+            clearESP()
+        end
+    end
 end)
 
 RS.Heartbeat:Connect(function()
@@ -608,4 +700,4 @@ p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end)
 
-print("=== OK V4 ===")
+print("=== OK V6 ===")
