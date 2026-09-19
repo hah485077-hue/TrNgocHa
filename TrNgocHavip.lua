@@ -1,5 +1,5 @@
--- VIP CYBER V16.2 - FIXED HOAN CHINH
-print("=== VIP CYBER V16.2 ===")
+-- VIP CYBER V16.4 - GITHUB READY
+print("=== VIP CYBER V16.4 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -8,9 +8,7 @@ local pg=p:WaitForChild("PlayerGui")
 local cam=workspace.CurrentCamera
 
 -- CLEANUP SCRIPT CU
-if _G.__VIP_CYBER_CLEANUP then
-    pcall(_G.__VIP_CYBER_CLEANUP)
-end
+if _G.__VIP_CYBER_CLEANUP then pcall(_G.__VIP_CYBER_CLEANUP) end
 local conns = {}
 local function track(c) table.insert(conns, c); return c end
 _G.__VIP_CYBER_CLEANUP = function()
@@ -19,7 +17,6 @@ _G.__VIP_CYBER_CLEANUP = function()
     local old = pg:FindFirstChild("VipMenu")
     if old then old:Destroy() end
 end
-
 local old=pg:FindFirstChild("VipMenu")
 if old then old:Destroy() end
 
@@ -120,7 +117,6 @@ colBtn.Font=Enum.Font.GothamBold
 colBtn.TextSize=14
 colBtn.ZIndex=3
 colBtn.Active=true
-colBtn.AutoButtonColor=true
 Instance.new("UICorner",colBtn).CornerRadius=UDim.new(1,0)
 table.insert(ledElements, colBtn)
 
@@ -134,7 +130,6 @@ closeBtn.Font=Enum.Font.GothamBold
 closeBtn.TextSize=12
 closeBtn.ZIndex=10
 closeBtn.Active=true
-closeBtn.AutoButtonColor=true
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(1,0)
 
 local cont=Instance.new("Frame",f)
@@ -157,7 +152,6 @@ local function mk(txt,x,y,w)
     b.TextSize=9
     b.TextWrapped=true
     b.Active=true
-    b.AutoButtonColor=true
     b.ZIndex=2
     b.Parent=cont
     Instance.new("UICorner",b).CornerRadius=UDim.new(0,6)
@@ -173,8 +167,8 @@ end
 
 -- COT BEN TRAI
 local bLock=mk("Lock On: TAT", 6, 4, 82)
-local bFly=mk("Bay: TAT", 6, 30, 82)
-local bFast=mk("Chay Nhanh: TAT", 6, 56, 82)
+local bFast=mk("Chay Nhanh: TAT", 6, 30, 82)
+local bFly=mk("Bay: TAT", 6, 56, 82)
 local bTp=mk("Dich Chuyen", 6, 82, 82)
 
 -- COT BEN PHAI
@@ -188,16 +182,13 @@ local function set(b,on,onT,offT)
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- SLIDER FIX MOBILE
 local activeSlider = nil
-
 track(UIS.InputChanged:Connect(function(inp)
     if activeSlider and (inp.UserInputType == Enum.UserInputType.MouseMovement 
         or inp.UserInputType == Enum.UserInputType.Touch) then
         activeSlider(inp.Position.X)
     end
 end))
-
 track(UIS.InputEnded:Connect(function(inp)
     if inp.UserInputType == Enum.UserInputType.MouseButton1 
         or inp.UserInputType == Enum.UserInputType.Touch then
@@ -249,7 +240,6 @@ local function slider(label,y,min,max,init,cb)
     hd2.BackgroundColor3=Color3.fromRGB(255,255,255)
     hd2.Text=""
     hd2.Active=true
-    hd2.AutoButtonColor=false
     hd2.ZIndex=3
     Instance.new("UICorner",hd2).CornerRadius=UDim.new(1,0)
     
@@ -275,7 +265,6 @@ local function slider(label,y,min,max,init,cb)
             activeSlider = updateFromInput
         end
     end)
-
     tr.InputBegan:Connect(function(inp)
         if inp.UserInputType==Enum.UserInputType.MouseButton1 or inp.UserInputType==Enum.UserInputType.Touch then
             updateFromInput(inp.Position.X)
@@ -287,7 +276,6 @@ end
 slider("Toc do chay", 110, 16, 200, 50, function(v) rs2=v end)
 slider("Toc do bay", 142, 20, 300, 60, function(v) fs=v end)
 
--- NUT VIP TRON
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
 openBtn.Position=UDim2.new(0, 2, 0, 25)
@@ -299,7 +287,6 @@ openBtn.TextSize=11
 openBtn.Visible=false
 openBtn.Active = true
 openBtn.ZIndex = 10
-openBtn.AutoButtonColor = true
 Instance.new("UICorner",openBtn).CornerRadius=UDim.new(1,0)
 local obStroke=Instance.new("UIStroke",openBtn)
 obStroke.Thickness=2
@@ -320,25 +307,20 @@ openBtn.InputBegan:Connect(function(input)
         openStartPos = openBtn.Position
     end
 end)
-
 track(UIS.InputChanged:Connect(function(input)
     if openDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         local delta = input.Position - openDragStart
-        if math.abs(delta.X) > 10 or math.abs(delta.Y) > 10 then
-            openMoved = true
-        end
+        if math.abs(delta.X) > 10 or math.abs(delta.Y) > 10 then openMoved = true end
         if openMoved then
             openBtn.Position = UDim2.new(openStartPos.X.Scale, openStartPos.X.Offset + delta.X, openStartPos.Y.Scale, openStartPos.Y.Offset + delta.Y)
         end
     end
 end))
-
 track(UIS.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         openDragging = false
     end
 end))
-
 openBtn.MouseButton1Click:Connect(function()
     if not openMoved then
         menuOn = true
@@ -400,14 +382,12 @@ hd.InputBegan:Connect(function(input)
         end
     end
 end)
-
 track(UIS.InputChanged:Connect(function(input)
     if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         local delta = input.Position - dragStart
         f.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 end))
-
 track(UIS.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = false
@@ -429,14 +409,12 @@ track(RS.RenderStepped:Connect(function(dt)
     end
 end))
 
--- NUT X DONG MENU
 closeBtn.MouseButton1Click:Connect(function()
     menuOn = false
     f.Visible = false
     openBtn.Visible = true
 end)
 
--- NUT "-" THU GON
 local collapsed = false
 colBtn.MouseButton1Click:Connect(function()
     collapsed = not collapsed
@@ -630,8 +608,9 @@ bNoclip.MouseButton1Click:Connect(function()
 end)
 
 bTp.MouseButton1Click:Connect(function()
-    if tick()-lastTp<0.1 then return end
-    lastTp=tick()
+    local now = os.clock()
+    if now - lastTp < 0.1 then return end
+    lastTp = now
     local ch=p.Character
     local rp=ch and ch:FindFirstChild("HumanoidRootPart")
     if not rp then return end
@@ -740,8 +719,7 @@ track(RS.RenderStepped:Connect(function()
                         local maxHealth = humanoid.MaxHealth
                         local ratio = maxHealth > 0 and (health / maxHealth) or 0
                         data.HealthFill.Size = UDim2.new(ratio, 0, 1, 0)
-                        local color = Color3.fromHSV(ratio * 0.33, 1, 1)
-                        data.HealthFill.BackgroundColor3 = color
+                        data.HealthFill.BackgroundColor3 = Color3.fromHSV(ratio * 0.33, 1, 1)
                         data.HealthText.Text = math.floor(health) .. " / " .. math.floor(maxHealth)
                     end
                 else
@@ -792,4 +770,4 @@ track(p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end))
 
-print("=== OK V16.2 ===")
+print("=== OK V16.4 ===")
