@@ -1,5 +1,5 @@
--- VIP CYBER V16.1 - FIXED (KHONG DOI GIAO DIEN)
-print("=== VIP CYBER V16.1 ===")
+-- VIP CYBER V16.2 - FIXED HOAN CHINH
+print("=== VIP CYBER V16.2 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -7,7 +7,7 @@ local p=P.LocalPlayer
 local pg=p:WaitForChild("PlayerGui")
 local cam=workspace.CurrentCamera
 
--- === CLEANUP SCRIPT CU (fix memory leak) ===
+-- CLEANUP SCRIPT CU
 if _G.__VIP_CYBER_CLEANUP then
     pcall(_G.__VIP_CYBER_CLEANUP)
 end
@@ -54,6 +54,7 @@ f.Position=UDim2.new(0, 2, 0, 25)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
+f.Active=true
 Instance.new("UICorner",f).CornerRadius=UDim.new(0,12)
 
 local borderFrame = Instance.new("Frame", f)
@@ -62,6 +63,7 @@ borderFrame.Position = UDim2.new(0, -5, 0, -5)
 borderFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
 borderFrame.BorderSizePixel = 0
 borderFrame.ZIndex = 0
+borderFrame.Active = false
 Instance.new("UICorner", borderFrame).CornerRadius = UDim.new(0, 16)
 local borderGrad = Instance.new("UIGradient", borderFrame)
 borderGrad.Color = rainbowSeq
@@ -93,6 +95,7 @@ hdCover.Position=UDim2.new(0,0,0.5,0)
 hdCover.BackgroundColor3=Color3.fromRGB(20,20,40)
 hdCover.BorderSizePixel=0
 hdCover.ZIndex=2
+hdCover.Active=false
 hdCover.Parent=hd
 
 local title=Instance.new("TextLabel",hd)
@@ -103,6 +106,7 @@ title.TextColor3=Color3.fromRGB(0,255,255)
 title.Font=Enum.Font.GothamBold
 title.TextSize=12
 title.ZIndex=3
+title.Active=false
 title.Parent=hd
 table.insert(ledElements, title)
 
@@ -115,6 +119,8 @@ colBtn.TextColor3=Color3.fromRGB(255,255,255)
 colBtn.Font=Enum.Font.GothamBold
 colBtn.TextSize=14
 colBtn.ZIndex=3
+colBtn.Active=true
+colBtn.AutoButtonColor=true
 Instance.new("UICorner",colBtn).CornerRadius=UDim.new(1,0)
 table.insert(ledElements, colBtn)
 
@@ -127,12 +133,15 @@ closeBtn.TextColor3=Color3.fromRGB(255,255,255)
 closeBtn.Font=Enum.Font.GothamBold
 closeBtn.TextSize=12
 closeBtn.ZIndex=10
+closeBtn.Active=true
+closeBtn.AutoButtonColor=true
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(1,0)
 
 local cont=Instance.new("Frame",f)
 cont.Size=UDim2.new(1,0,1,-28)
 cont.Position=UDim2.new(0,0,0,28)
 cont.BackgroundTransparency=1
+cont.Active=false
 cont.Parent=f
 
 local hide={}
@@ -147,6 +156,9 @@ local function mk(txt,x,y,w)
     b.Font=Enum.Font.GothamBold
     b.TextSize=9
     b.TextWrapped=true
+    b.Active=true
+    b.AutoButtonColor=true
+    b.ZIndex=2
     b.Parent=cont
     Instance.new("UICorner",b).CornerRadius=UDim.new(0,6)
     local bStroke = Instance.new("UIStroke", b)
@@ -159,13 +171,13 @@ local function mk(txt,x,y,w)
     return b
 end
 
--- === COT BEN TRAI ===
+-- COT BEN TRAI
 local bLock=mk("Lock On: TAT", 6, 4, 82)
 local bFly=mk("Bay: TAT", 6, 30, 82)
 local bFast=mk("Chay Nhanh: TAT", 6, 56, 82)
 local bTp=mk("Dich Chuyen", 6, 82, 82)
 
--- === COT BEN PHAI ===
+-- COT BEN PHAI
 local bSave=mk("Luu Diem", 92, 4, 82)
 local bBack=mk("Ve Diem", 92, 30, 82)
 local bNoclip=mk("Xuyen Map: TAT", 92, 56, 82)
@@ -176,7 +188,7 @@ local function set(b,on,onT,offT)
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- === FIX: SLIDER MOBILE (dung InputChanged thay vi GetMouseLocation) ===
+-- SLIDER FIX MOBILE
 local activeSlider = nil
 
 track(UIS.InputChanged:Connect(function(inp)
@@ -203,6 +215,7 @@ local function slider(label,y,min,max,init,cb)
     lbl.Font=Enum.Font.GothamBold
     lbl.TextSize=9
     lbl.TextXAlignment=Enum.TextXAlignment.Left
+    lbl.Active=false
     table.insert(ledElements, lbl)
     table.insert(hide,lbl)
 
@@ -211,7 +224,8 @@ local function slider(label,y,min,max,init,cb)
     tr.Position=UDim2.new(0,6,0,y+16)
     tr.BackgroundColor3=Color3.fromRGB(30,30,45)
     tr.BorderSizePixel=0
-    tr.Name = "SliderTrack"
+    tr.Active=true
+    tr.ZIndex=2
     Instance.new("UICorner",tr).CornerRadius=UDim.new(0,6)
     
     local trStroke = Instance.new("UIStroke", tr)
@@ -225,6 +239,7 @@ local function slider(label,y,min,max,init,cb)
     fill.Size=UDim2.new((init-min)/(max-min),0,1,0)
     fill.BackgroundColor3=Color3.fromRGB(0,200,255)
     fill.BorderSizePixel=0
+    fill.Active=false
     Instance.new("UICorner",fill).CornerRadius=UDim.new(0,6)
     table.insert(ledElements, fill)
 
@@ -233,6 +248,9 @@ local function slider(label,y,min,max,init,cb)
     hd2.Position=UDim2.new((init-min)/(max-min),-8,0.5,-8)
     hd2.BackgroundColor3=Color3.fromRGB(255,255,255)
     hd2.Text=""
+    hd2.Active=true
+    hd2.AutoButtonColor=false
+    hd2.ZIndex=3
     Instance.new("UICorner",hd2).CornerRadius=UDim.new(1,0)
     
     local hdStroke = Instance.new("UIStroke", hd2)
@@ -266,11 +284,10 @@ local function slider(label,y,min,max,init,cb)
     end)
 end
 
--- Doi cho 2 thanh truot
 slider("Toc do chay", 110, 16, 200, 50, function(v) rs2=v end)
 slider("Toc do bay", 142, 20, 300, 60, function(v) fs=v end)
 
--- Nút VIP tròn
+-- NUT VIP TRON
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
 openBtn.Position=UDim2.new(0, 2, 0, 25)
@@ -281,8 +298,8 @@ openBtn.Font=Enum.Font.GothamBold
 openBtn.TextSize=11
 openBtn.Visible=false
 openBtn.Active = true
-openBtn.AutoButtonColor = false
 openBtn.ZIndex = 10
+openBtn.AutoButtonColor = true
 Instance.new("UICorner",openBtn).CornerRadius=UDim.new(1,0)
 local obStroke=Instance.new("UIStroke",openBtn)
 obStroke.Thickness=2
@@ -340,6 +357,7 @@ upBtn.TextColor3=Color3.fromRGB(255,255,255)
 upBtn.Font=Enum.Font.GothamBold
 upBtn.TextSize=20
 upBtn.Visible=false
+upBtn.Active=true
 Instance.new("UICorner",upBtn).CornerRadius=UDim.new(1,0)
 
 local dnBtn=Instance.new("TextButton",g)
@@ -351,6 +369,7 @@ dnBtn.TextColor3=Color3.fromRGB(255,255,255)
 dnBtn.Font=Enum.Font.GothamBold
 dnBtn.TextSize=20
 dnBtn.Visible=false
+dnBtn.Active=true
 Instance.new("UICorner",dnBtn).CornerRadius=UDim.new(1,0)
 
 upBtn.MouseButton1Down:Connect(function() upS=1 end)
@@ -410,14 +429,14 @@ track(RS.RenderStepped:Connect(function(dt)
     end
 end))
 
--- Nút X đóng menu
+-- NUT X DONG MENU
 closeBtn.MouseButton1Click:Connect(function()
     menuOn = false
     f.Visible = false
     openBtn.Visible = true
 end)
 
--- === FIX: NUT "-" THU GON / MO RONG MENU ===
+-- NUT "-" THU GON
 local collapsed = false
 colBtn.MouseButton1Click:Connect(function()
     collapsed = not collapsed
@@ -465,11 +484,10 @@ local function createESP(pl)
     nameLabel.Parent = billboard
     
     local healthBg = Instance.new("Frame")
-    healthBg.Size = UDim2.new(1, -20,  clear0, 8)
-    healthBg.Position = UESPDim2.new(0, 10, 0, 18)
-()
-    healthBg.BackgroundColor3 = Color3.from   RGB(30,30,30)
-    healthBg.BorderSize forPixel = 0
+    healthBg.Size = UDim2.new(1, -20, 0, 8)
+    healthBg.Position = UDim2.new(0, 10, 0, 18)
+    healthBg.BackgroundColor3 = Color3.fromRGB(30,30,30)
+    healthBg.BorderSizePixel = 0
     healthBg.Parent = billboard
     Instance.new("UICorner", healthBg).CornerRadius = UDim.new(0,4)
     
@@ -497,14 +515,13 @@ end
 
 local function removeESP(pl)
     if espGuis[pl] then
-        if espGuis[pl].Gui then
-            espGuis[pl].Gui:Destroy()
-        end
+        if espGuis[pl].Gui then espGuis[pl].Gui:Destroy() end
         espGuis[pl] = nil
     end
 end
 
-local function pl, data in pairs(espGuis) do
+local function clearESP()
+    for pl, data in pairs(espGuis) do
         if data.Gui then data.Gui:Destroy() end
     end
     espGuis = {}
@@ -515,9 +532,7 @@ track(P.PlayerRemoving:Connect(removeESP))
 bESP.MouseButton1Click:Connect(function()
     espEnabled = not espEnabled
     set(bESP, espEnabled, "ESP: BAT", "ESP: TAT")
-    if not espEnabled then
-        clearESP()
-    end
+    if not espEnabled then clearESP() end
 end)
 
 local function findT()
@@ -737,9 +752,7 @@ track(RS.RenderStepped:Connect(function()
             end
         end
     else
-        if next(espGuis) then
-            clearESP()
-        end
+        if next(espGuis) then clearESP() end
     end
 end))
 
@@ -779,4 +792,4 @@ track(p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end))
 
-print("=== OK V16.1 ===")
+print("=== OK V16.2 ===")
