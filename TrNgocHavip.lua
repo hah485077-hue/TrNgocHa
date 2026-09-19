@@ -21,7 +21,7 @@ local espEnabled=false
 local g=Instance.new("ScreenGui")
 g.Name="VipMenu"
 g.ResetOnSpawn=false
-g.IgnoreGuiInset=true -- Cho menu len tren cung man hinh
+g.IgnoreGuiInset=true
 g.Parent=pg
 
 local rainbowSeq = ColorSequence.new({
@@ -36,10 +36,10 @@ local rainbowSeq = ColorSequence.new({
 
 local ledElements = {}
 
--- Khung chinh (da ha xuong 40 de khong che thanh Roblox)
+-- Khung chinh (da ha xuong 90)
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,180,0,215)
-f.Position=UDim2.new(0, 10, 0, 40)
+f.Position=UDim2.new(0, 10, 0, 90)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -158,7 +158,7 @@ local function set(b,on,onT,offT)
     b.BackgroundColor3=on and Color3.fromRGB(0,150,60) or Color3.fromRGB(35,35,55)
 end
 
--- Slider (them Active=true de keo duoc)
+-- Slider
 local function slider(label,y,min,max,init,cb)
     local lbl=Instance.new("TextLabel",cont)
     lbl.Size=UDim2.new(1,-12,0,14)
@@ -177,7 +177,7 @@ local function slider(label,y,min,max,init,cb)
     tr.Position=UDim2.new(0,6,0,y+16)
     tr.BackgroundColor3=Color3.fromRGB(30,30,45)
     tr.BorderSizePixel=0
-    tr.Active=true -- QUAN TRONG
+    tr.Active=true
     tr.Name = "SliderTrack"
     Instance.new("UICorner",tr).CornerRadius=UDim.new(0,6)
     
@@ -252,7 +252,7 @@ slider("Toc do chay", 142, 16, 200, 50, function(v) rs2=v end)
 
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0,10,0,40)
+openBtn.Position=UDim2.new(0,10,0,90)
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
