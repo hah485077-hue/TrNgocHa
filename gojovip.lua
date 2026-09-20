@@ -1,5 +1,5 @@
 -- ==========================================
--- GOJO SATORU FULL EFFECTS SCRIPT (VISUAL)
+-- GOJO SATORU FULL EFFECTS (MOBILE VERSION)
 -- ==========================================
 
 local Players = game:GetService("Players")
@@ -8,8 +8,23 @@ local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
 
 local player = Players.LocalPlayer
-local mouse = player:GetMouse()
 local camera = workspace.CurrentCamera
+
+-- Hàm tự động tìm mục tiêu (Dùng cho cả PC và Điện thoại)
+local function getTargetPosition()
+    local rayOrigin = camera.CFrame.Position
+    local rayDirection = camera.CFrame.LookVector * 150 -- Tầm xa 150 studs
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterDescendantsInstances = {player.Character}
+    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+    
+    local result = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+    if result then
+        return result.Position
+    else
+        return rayOrigin + rayDirection
+    end
+end
 
 -- Tạo GUI
 local screenGui = Instance.new("ScreenGui")
@@ -18,8 +33,8 @@ screenGui.ResetOnSpawn = false
 screenGui.Parent = player:WaitForChild("PlayerGui")
 
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 320, 0, 280)
-mainFrame.Position = UDim2.new(0.5, -160, 0.5, -140)
+mainFrame.Size = UDim2.new(0, 280, 0, 260) -- Thu nhỏ lại một chút cho vừa màn hình đt
+mainFrame.Position = UDim2.new(0.5, -140, 0.5, -130)
 mainFrame.BackgroundColor3 = Color3.fromRGB(5, 5, 15)
 mainFrame.BorderSizePixel = 0
 mainFrame.Active = true
@@ -36,12 +51,12 @@ stroke.Color = Color3.fromRGB(120, 0, 255)
 stroke.Parent = mainFrame
 
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0, 45)
+title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
-title.Text = "GOJO SATORU - FULL EFFECTS"
+title.Text = "GOJO SATORU (MOBILE)"
 title.TextColor3 = Color3.fromRGB(180, 130, 255)
 title.Font = Enum.Font.GothamBlack
-title.TextSize = 18
+title.TextSize = 16
 title.Parent = mainFrame
 
 local function createBtn(text, color, yPos)
@@ -52,16 +67,16 @@ local function createBtn(text, color, yPos)
     btn.Text = text
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     btn.Font = Enum.Font.GothamBold
-    btn.TextSize = 15
+    btn.TextSize = 14
     btn.Parent = mainFrame
     local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, 8); c.Parent = btn
     return btn
 end
 
-local btnBlue = createBtn("Lapse: Blue (Hút)", Color3.fromRGB(0, 120, 255), 55)
-local btnRed = createBtn("Reversal: Red (Đẩy)", Color3.fromRGB(255, 60, 60), 105)
-local btnPurple = createBtn("Hollow Purple (Tia Tím)", Color3.fromRGB(160, 0, 255), 155)
-local btnDomain = createBtn("Domain Expansion (Vô Hạn)", Color3.fromRGB(80, 0, 150), 205)
+local btnBlue = createBtn("Lapse: Blue", Color3.fromRGB(0, 120, 255), 50)
+local btnRed = createBtn("Reversal: Red", Color3.fromRGB(255, 60, 60), 100)
+local btnPurple = createBtn("Hollow Purple", Color3.fromRGB(160, 0, 255), 150)
+local btnDomain = createBtn("Domain Expansion", Color3.fromRGB(80, 0, 150), 200)
 
 -- Hàm tạo âm thanh
 local function playSound(id, pos)
@@ -76,8 +91,8 @@ end
 
 -- 1. BLUE (Lapse: Blue)
 btnBlue.MouseButton1Click:Connect(function()
-    local pos = mouse.Hit.Position
-    playSound(6895963173, pos) -- Tiếng ù ù
+    local pos = getTargetPosition() -- Tự động lấy vị trí camera
+    playSound(6895963173, pos)
     
     local orb = Instance.new("Part")
     orb.Shape = Enum.PartType.Ball
@@ -95,15 +110,13 @@ btnBlue.MouseButton1Click:Connect(function()
     light.Brightness = 5
     light.Parent = orb
 
-    -- Hiệu ứng hạt
     local particles = Instance.new("ParticleEmitter")
-    particles.Texture = "rbxassetid://243098098" -- Hạt năng lượng
+    particles.Texture = "rbxassetid://243098098"
     particles.Color = ColorSequence.new(Color3.fromRGB(0, 150, 255))
     particles.Rate = 100
     particles.Speed = NumberRange.new(5, 10)
     particles.Parent = orb
 
-    -- Hút vật thể
     task.spawn(function()
         for i = 1, 30 do
             task.wait(0.05)
@@ -116,7 +129,6 @@ btnBlue.MouseButton1Click:Connect(function()
         end
     end)
 
-    -- Nổ
     task.delay(2, function()
         local explode = Instance.new("Explosion")
         explode.BlastRadius = 20
@@ -128,7 +140,7 @@ end)
 
 -- 2. RED (Reversal: Red)
 btnRed.MouseButton1Click:Connect(function()
-    local pos = mouse.Hit.Position
+    local pos = getTargetPosition()
     playSound(6895963173, pos)
     
     local orb = Instance.new("Part")
@@ -150,16 +162,15 @@ btnRed.MouseButton1Click:Connect(function()
     local particles = Instance.new("ParticleEmitter")
     particles.Texture = "rbxassetid://243098098"
     particles.Color = ColorSequence.new(Color3.fromRGB(255, 50, 50))
-    particles.Rate = 100
-    particles.Speed = NumberRange.new(5, 10)
+    particles.Rate = domain 100
+    particles.Speed = NumberRange.new(5.P, 10)
     particles.Parent = orb
 
-    -- Đẩy vật thể
-    task.spawn(function()
-        for i = 1, 30 do
-            task.wait(0.05)
+osition    task.spawn(function()
+        for i =  =1, 30 do
+            task.wait( hr0.05)
             if not orb.Parent then break end
-            for _, v in pairs(workspace:GetDescendants()) do
+p            for _, v in pairs(workspace:GetDescendants()) do
                 if v:IsA("BasePart") and v ~= orb and not v.Anchored and (v.Position - orb.Position).Magnitude < 60 then
                     v.Velocity = (v.Position - orb.Position).Unit * 150
                 end
@@ -176,14 +187,14 @@ btnRed.MouseButton1Click:Connect(function()
     end)
 end)
 
--- 3. HOLLOW PURPLE (Tia tím)
+-- 3. HOLLOW PURPLE
 btnPurple.MouseButton1Click:Connect(function()
     local char = player.Character
     if not char or not char:FindFirstChild("HumanoidRootPart") then return end
     local hrp = char.HumanoidRootPart
     
     local startPos = hrp.Position
-    local endPos = mouse.Hit.Position
+    local endPos = getTargetPosition() -- Tự động lấy vị trí camera
     
     playSound(6895963173, startPos)
     
@@ -202,7 +213,6 @@ btnPurple.MouseButton1Click:Connect(function()
     light.Brightness = 8
     light.Parent = beam
 
-    -- Hiệu ứng camera rung
     local originalCFrame = camera.CFrame
     local shakeTime = 2
     local shakeConn
@@ -217,7 +227,7 @@ btnPurple.MouseButton1Click:Connect(function()
     end)
 end)
 
--- 4. DOMAIN EXPANSION (Vô Hạn Không Gian)
+-- 4. DOMAIN EXPANSION
 btnDomain.MouseButton1Click:Connect(function()
     local char = player.Character
     if not char or not char:FindFirstChild("HumanoidRootPart") then return end
@@ -232,7 +242,7 @@ btnDomain.MouseButton1Click:Connect(function()
     domain.Material = Enum.Material.ForceField
     domain.Anchored = true
     domain.CanCollide = false
-    domain.Position = hrp.Position
+   .Position
     domain.Parent = workspace
 
     local highlight = Instance.new("Highlight")
@@ -241,7 +251,6 @@ btnDomain.MouseButton1Click:Connect(function()
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Parent = domain
 
-    -- Hiệu ứng sao bên trong
     local particles = Instance.new("ParticleEmitter")
     particles.Texture = "rbxassetid://243098098"
     particles.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255))
@@ -250,7 +259,6 @@ btnDomain.MouseButton1Click:Connect(function()
     particles.Size = NumberSequence.new(1)
     particles.Parent = domain
 
-    -- Hiệu ứng nhấp nháy
     local tween = TweenService:Create(domain, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Transparency = 0.5})
     tween:Play()
 
@@ -260,4 +268,4 @@ btnDomain.MouseButton1Click:Connect(function()
     end)
 end)
 
-print("Gojo Full Effects đã được tải thành công!")
+print("Gojo Mobile Mod loaded!")
