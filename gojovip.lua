@@ -1,5 +1,5 @@
 -- language: Lua, target: Roblox (Delta iOS / Mobile / PC Executor)
--- Gojo Satoru V11: SUPREME GOD TIER (Black Hole Singularity & Flying Debris Storm)
+-- Gojo Satoru V12: GODLY ANIME ACCURATE (Epic Blue/Red Orbs & Black Hole Void)
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -16,10 +16,9 @@ player.CharacterAdded:Connect(function(newChar)
     hrp = newChar:WaitForChild("HumanoidRootPart")
 end)
 
-local cc = Lighting:FindFirstChild("Gojo_CC_Supreme") or Instance.new("ColorCorrectionEffect", Lighting)
-cc.Name = "Gojo_CC_Supreme"
+local cc = Lighting:FindFirstChild("Gojo_CC_V12") or Instance.new("ColorCorrectionEffect", Lighting)
+cc.Name = "Gojo_CC_V12"
 
--- HỆ THỐNG ÂM THANH & RUNG CAMERA ĐỈNH CAO
 local function playSound(id, pos, vol, pitch)
     local sound = Instance.new("Sound")
     sound.SoundId = "rbxassetid://" .. tostring(id)
@@ -63,25 +62,25 @@ local function createLightning(centerPos, color, radius)
     Debris:AddItem(p, 0.15)
 end
 
--- ================= GIAO DIỆN MENU V11 =================
+-- ================= GIAO DIỆN MENU V12 =================
 local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-screenGui.Name = "Gojo_Supreme_V11"
+screenGui.Name = "Gojo_V12_Gui"
 screenGui.ResetOnSpawn = false
 
 local mainFrame = Instance.new("Frame", screenGui)
 mainFrame.Size = UDim2.new(0, 340, 0, 440)
 mainFrame.Position = UDim2.new(0.5, -170, 0.5, -220)
-mainFrame.BackgroundColor3 = Color3.fromRGB(6, 6, 10)
+mainFrame.BackgroundColor3 = Color3.fromRGB(5, 5, 8)
 mainFrame.Active = true
 mainFrame.Draggable = true
 Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 14)
-Instance.new("UIStroke", mainFrame).Color = Color3.fromRGB(200, 0, 255)
+Instance.new("UIStroke", mainFrame).Color = Color3.fromRGB(220, 0, 255)
 mainFrame.BorderSizePixel = 0
 
 local title = Instance.new("TextLabel", mainFrame)
 title.Size = UDim2.new(1, 0, 0, 45)
 title.BackgroundTransparency = 1
-title.Text = "GOJO SATORU - PHIÊN BẢN V11"
+title.Text = "GOJO SATORU - PHIÊN BẢN V12"
 title.TextColor3 = Color3.fromRGB(240, 210, 255)
 title.Font = Enum.Font.GothamBlack
 title.TextSize = 15
@@ -90,7 +89,7 @@ local openBtn = Instance.new("TextButton", screenGui)
 openBtn.Size = UDim2.new(0, 55, 0, 55)
 openBtn.Position = UDim2.new(0, 20, 0.5, 0)
 openBtn.BackgroundColor3 = Color3.fromRGB(140, 0, 255)
-openBtn.Text = "V11"
+openBtn.Text = "V12"
 openBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 openBtn.Font = Enum.Font.GothamBlack
 openBtn.TextSize = 15
@@ -110,13 +109,13 @@ local function createBtn(name, color, y)
     return btn
 end
 
-local btnBlue = createBtn("1. Thương (Blue) - Hố Đen Hút", Color3.fromRGB(0, 110, 255), 55)
-local btnRed = createBtn("2. Hách (Red) - Sóng Xung Kích", Color3.fromRGB(255, 30, 50), 105)
-local btnPurple = createBtn("3. Hư Thức Tử V11 (+ Bão Đất Đá Vỡ)", Color3.fromRGB(150, 0, 255), 155)
-local btnDomain = createBtn("4. Vô Lượng Không Sứ V11 (Vũ Trụ)", Color3.fromRGB(30, 0, 60), 205)
+local btnBlue = createBtn("1. Thương (Blue) - Siêu Hút Đẹp", Color3.fromRGB(0, 110, 255), 55)
+local btnRed = createBtn("2. Hách (Red) - Sóng Xung Kích Đẹp", Color3.fromRGB(255, 30, 50), 105)
+local btnPurple = createBtn("3. Hư Thức Tử V12 (Cầu Xanh/Đỏ Cực Phê)", Color3.fromRGB(150, 0, 255), 155)
+local btnDomain = createBtn("4. Vô Lượng Không Sứ V12 (Chuẩn Ảnh Hố Đen)", Color3.fromRGB(30, 0, 60), 205)
 local btnOutfit = createBtn("5. Mod Trang Phục Gojo Chuẩn", Color3.fromRGB(200, 70, 160), 255)
 
--- ================= 3. HƯ THỨC TỬ V11 (CÓ HIỆU ỨNG ĐẤT ĐÁ BAY) =================
+-- ================= 3. HƯ THỨC TỬ V12 (QUẢ CẦU XANH & ĐỎ ĐẸP LUNG LINH) =================
 btnPurple.MouseButton1Click:Connect(function()
     if not hrp then return end
     hrp.Anchored = true 
@@ -128,30 +127,44 @@ btnPurple.MouseButton1Click:Connect(function()
     local leftPos = hrp.Position + (hrp.CFrame.RightVector * -7) + Vector3.new(0, 2, 0)
     local rightPos = hrp.Position + (hrp.CFrame.RightVector * 7) + Vector3.new(0, 2, 0)
     
+    -- QUẢ CẦU XANH (BLUE) ĐƯỢC NÂNG CẤP ĐẸP NHƯ ANIME (ĐA TẦNG + VÒNG QUAY)
     local blue = Instance.new("Part", workspace)
-    blue.Shape = Enum.PartType.Ball; blue.Size = Vector3.new(0.2, 0.2, 0.2); blue.Position = leftPos
-    blue.Color = Color3.fromRGB(0, 150, 255); blue.Material = Enum.Material.Neon; blue.Anchored = true; blue.CanCollide = false
+    blue.Shape = Enum.PartType.Ball; blue.Size = Vector3.new(0.5, 0.5, 0.5); blue.Position = leftPos
+    blue.Color = Color3.fromRGB(0, 200, 255); blue.Material = Enum.Material.Neon; blue.Anchored = true; blue.CanCollide = false
     
+    local blueRing = Instance.new("Part", workspace)
+    blueRing.Shape = Enum.PartType.Ball; blueRing.Size = Vector3.new(0.6, 0.6, 0.6); blueRing.Position = leftPos
+    blueRing.Color = Color3.fromRGB(0, 80, 255); blueRing.Material = Enum.Material.ForceField; blueRing.Anchored = true; blueRing.CanCollide = false
+
+    -- QUẢ CẦU ĐỎ (RED) ĐƯỢC NÂNG CẤP RỰC RỠ KHÔNG KÉM
     local red = Instance.new("Part", workspace)
-    red.Shape = Enum.PartType.Ball; red.Size = Vector3.new(0.2, 0.2, 0.2); red.Position = rightPos
-    red.Color = Color3.fromRGB(255, 30, 30); red.Material = Enum.Material.Neon; red.Anchored = true; red.CanCollide = false
+    red.Shape = Enum.PartType.Ball; red.Size = Vector3.new(0.5, 0.5, 0.5); red.Position = rightPos
+    red.Color = Color3.fromRGB(255, 50, 50); red.Material = Enum.Material.Neon; red.Anchored = true; red.CanCollide = false
     
-    TweenService:Create(blue, TweenInfo.new(1.8), {Size = Vector3.new(15, 15, 15)}):Play()
-    TweenService:Create(red, TweenInfo.new(1.8), {Size = Vector3.new(15, 15, 15)}):Play()
+    local redRing = Instance.new("Part", workspace)
+    redRing.Shape = Enum.PartType.Ball; redRing.Size = Vector3.new(0.6, 0.6, 0.6); redRing.Position = rightPos
+    redRing.Color = Color3.fromRGB(255, 150, 0); redRing.Material = Enum.Material.ForceField; redRing.Anchored = true; redRing.CanCollide = false
+
+    TweenService:Create(blue, TweenInfo.new(1.8), {Size = Vector3.new(16, 16, 16)}):Play()
+    TweenService:Create(blueRing, TweenInfo.new(1.8), {Size = Vector3.new(18, 18, 18)}):Play()
+    TweenService:Create(red, TweenInfo.new(1.8), {Size = Vector3.new(16, 16, 16)}):Play()
+    TweenService:Create(redRing, TweenInfo.new(1.8), {Size = Vector3.new(18, 18, 18)}):Play()
     cameraShake(2, 1.2)
     
     for i = 1, 15 do
         task.wait(0.1)
-        createLightning(blue.Position, Color3.fromRGB(0, 150, 255), 8)
-        createLightning(red.Position, Color3.fromRGB(255, 50, 50), 8)
+        createLightning(blue.Position, Color3.fromRGB(0, 200, 255), 8)
+        createLightning(red.Position, Color3.fromRGB(255, 80, 80), 8)
     end
     
     local combinePos = hrp.Position + (hrp.CFrame.LookVector * 5) + Vector3.new(0, 1.5, 0)
     TweenService:Create(blue, TweenInfo.new(0.25, Enum.EasingStyle.Exponential, Enum.EasingDirection.In), {Position = combinePos, Size = Vector3.new(5, 5, 5)}):Play()
+    TweenService:Create(blueRing, TweenInfo.new(0.25, Enum.EasingStyle.Exponential, Enum.EasingDirection.In), {Position = combinePos, Size = Vector3.new(6, 6, 6)}):Play()
     TweenService:Create(red, TweenInfo.new(0.25, Enum.EasingStyle.Exponential, Enum.EasingDirection.In), {Position = combinePos, Size = Vector3.new(5, 5, 5)}):Play()
+    TweenService:Create(redRing, TweenInfo.new(0.25, Enum.EasingStyle.Exponential, Enum.EasingDirection.In), {Position = combinePos, Size = Vector3.new(6, 6, 6)}):Play()
     
     task.wait(0.25)
-    blue:Destroy(); red:Destroy()
+    blue:Destroy(); blueRing:Destroy(); red:Destroy(); redRing:Destroy()
     
     cc.Brightness = 2.5; cc.TintColor = Color3.fromRGB(255, 255, 255)
     TweenService:Create(cc, TweenInfo.new(0.8), {Brightness = 0, TintColor = Color3.fromRGB(130, 0, 255)}):Play()
@@ -165,7 +178,6 @@ btnPurple.MouseButton1Click:Connect(function()
     purpleCore.Shape = Enum.PartType.Ball; purpleCore.Size = Vector3.new(45, 45, 45); purpleCore.Position = combinePos
     purpleCore.Color = Color3.fromRGB(130, 0, 255); purpleCore.Material = Enum.Material.Neon; purpleCore.Anchored = true; purpleCore.CanCollide = false
     
-    -- Lõi hố đen nhỏ hút bao quanh quả cầu tím
     local blackHoleRing = Instance.new("Part", workspace)
     blackHoleRing.Shape = Enum.PartType.Ball; blackHoleRing.Size = Vector3.new(55, 55, 55); blackHoleRing.Position = combinePos
     blackHoleRing.Color = Color3.fromRGB(0, 0, 0); blackHoleRing.Material = Enum.Material.Glass; blackHoleRing.Anchored = true; blackHoleRing.CanCollide = false
@@ -195,13 +207,11 @@ btnPurple.MouseButton1Click:Connect(function()
         blackHoleRing.Position = currentPos
         createLightning(currentPos, Color3.fromRGB(180, 50, 255), 45)
         
-        -- HIỆU ỨNG HÚT VÀ TẠO ĐẤT ĐÁ VỠ VỤN VĂNG TUNG TÓE
         for _, v in pairs(workspace:GetDescendants()) do
             if v:IsA("BasePart") and not v.Anchored and v ~= purpleCore and v ~= blackHoleRing then
                 local dist = (v.Position - currentPos).Magnitude
                 if dist < 100 then
                     v.Velocity = (currentPos - v.Position).Unit * 600 + Vector3.new(math.random(-50,50), math.random(100,300), math.random(-50,50))
-                    -- Tự động bẻ vỡ nhỏ các phần vật thể để tạo cảm giác tàn phá
                     if dist < 40 and v.Size.Magnitude > 3 then
                         v.Size = v.Size * 0.95
                     end
@@ -211,7 +221,7 @@ btnPurple.MouseButton1Click:Connect(function()
     end)
 end)
 
--- ================= 4. VÔ LƯỢNG KHÔNG SỨ V11 =================
+-- ================= 4. VÔ LƯỢNG KHÔNG SỨ V12 (CHUẨN ẢNH HỐ ĐEN ANIME) =================
 btnDomain.MouseButton1Click:Connect(function()
     if not hrp then return end
     hrp.Anchored = true
@@ -236,22 +246,31 @@ btnDomain.MouseButton1Click:Connect(function()
     domainShell.Shape = Enum.PartType.Ball
     domainShell.Size = Vector3.new(0, 0, 0)
     domainShell.Position = centerPos
-    domainShell.Color = Color3.fromRGB(40, 5, 90)
+    domainShell.Color = Color3.fromRGB(20, 2, 45)
     domainShell.Material = Enum.Material.ForceField 
     domainShell.Anchored = true; domainShell.CanCollide = false
     
-    -- Cục Hố Đen lơ lửng ở tâm Vô Lượng Không Sứ
-    local centerBlackHole = Instance.new("Part", workspace)
-    centerBlackHole.Shape = Enum.PartType.Ball
-    centerBlackHole.Size = Vector3.new(0, 0, 0)
-    centerBlackHole.Position = centerPos + Vector3.new(0, 30, 0)
-    centerBlackHole.Color = Color3.fromRGB(10, 0, 20)
-    centerBlackHole.Material = Enum.Material.Neon
-    centerBlackHole.Anchored = true; centerBlackHole.CanCollide = false
+    -- HỐ ĐEN TRUNG TÂM CHUẨN NHƯ TRONG ẢNH BẠN GỬI
+    local blackHoleCore = Instance.new("Part", workspace)
+    blackHoleCore.Shape = Enum.PartType.Ball
+    blackHoleCore.Size = Vector3.new(0, 0, 0)
+    blackHoleCore.Position = centerPos + Vector3.new(0, 35, 0)
+    blackHoleCore.Color = Color3.fromRGB(0, 0, 0)
+    blackHoleCore.Material = Enum.Material.Glass
+    blackHoleCore.Anchored = true; blackHoleCore.CanCollide = false
+
+    local blackHoleRingGlow = Instance.new("Part", workspace)
+    blackHoleRingGlow.Shape = Enum.PartType.Ball
+    blackHoleRingGlow.Size = Vector3.new(0, 0, 0)
+    blackHoleRingGlow.Position = centerPos + Vector3.new(0, 35, 0)
+    blackHoleRingGlow.Color = Color3.fromRGB(150, 100, 255)
+    blackHoleRingGlow.Material = Enum.Material.Neon
+    blackHoleRingGlow.Anchored = true; blackHoleRingGlow.CanCollide = false
 
     TweenService:Create(domainFloor, TweenInfo.new(1.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = Vector3.new(400, 1, 400)}):Play()
     TweenService:Create(domainShell, TweenInfo.new(1.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = Vector3.new(400, 400, 400)}):Play()
-    TweenService:Create(centerBlackHole, TweenInfo.new(1.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = Vector3.new(35, 35, 35)}):Play()
+    TweenService:Create(blackHoleCore, TweenInfo.new(1.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = Vector3.new(45, 45, 45)}):Play()
+    TweenService:Create(blackHoleRingGlow, TweenInfo.new(1.8, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = Vector3.new(50, 50, 50), Transparency = 0.5}):Play()
     
     local stars = {}
     for i = 1, 300 do
@@ -290,7 +309,8 @@ btnDomain.MouseButton1Click:Connect(function()
         
         TweenService:Create(domainFloor, TweenInfo.new(1), {Size = Vector3.new(0, 0, 0)}):Play()
         TweenService:Create(domainShell, TweenInfo.new(1), {Size = Vector3.new(0, 0, 0), Transparency = 1}):Play()
-        TweenService:Create(centerBlackHole, TweenInfo.new(1), {Size = Vector3.new(0, 0, 0), Transparency = 1}):Play()
+        TweenService:Create(blackHoleCore, TweenInfo.new(1), {Size = Vector3.new(0, 0, 0), Transparency = 1}):Play()
+        TweenService:Create(blackHoleRingGlow, TweenInfo.new(1), {Size = Vector3.new(0, 0, 0), Transparency = 1}):Play()
         
         for _, star in pairs(stars) do
             TweenService:Create(star, TweenInfo.new(0.4), {Transparency = 1}):Play()
@@ -300,23 +320,24 @@ btnDomain.MouseButton1Click:Connect(function()
         task.wait(1)
         domainFloor:Destroy()
         domainShell:Destroy()
-        centerBlackHole:Destroy()
+        blackHoleCore:Destroy()
+        blackHoleRingGlow:Destroy()
         hrp.Anchored = false
     end)
 end)
 
--- ================= CÁC KỸ NĂNG KHÁC VÀ MOD OUTFIT =================
+-- ================= KỸ NĂNG KHÁC & OUTFIT =================
 btnBlue.MouseButton1Click:Connect(function()
     if not hrp then return end
     local pos = hrp.Position + (hrp.CFrame.LookVector * 25)
     playSound(9114223179, pos, 6) 
     local orb = Instance.new("Part", workspace)
-    orb.Shape = Enum.PartType.Ball; orb.Size = Vector3.new(0.2, 0.2, 0.2); orb.Position = pos
-    orb.Color = Color3.fromRGB(0, 40, 255); orb.Material = Enum.Material.Neon; orb.Anchored = true; orb.CanCollide = false
-    TweenService:Create(orb, TweenInfo.new(0.5, Enum.EasingStyle.Bounce), {Size = Vector3.new(18, 18, 18)}):Play()
+    orb.Shape = Enum.PartType.Ball; orb.Size = Vector3.new(0.5, 0.5, 0.5); orb.Position = pos
+    orb.Color = Color3.fromRGB(0, 200, 255); orb.Material = Enum.Material.Neon; orb.Anchored = true; orb.CanCollide = false
+    TweenService:Create(orb, TweenInfo.new(0.5, Enum.EasingStyle.Bounce), {Size = Vector3.new(20, 20, 20)}):Play()
     cameraShake(1.5, 1)
     for i = 1, 25 do
-        createLightning(pos, Color3.fromRGB(0, 150, 255), 18)
+        createLightning(pos, Color3.fromRGB(0, 200, 255), 18)
         for _, v in pairs(workspace:GetDescendants()) do
             if v:IsA("BasePart") and not v.Anchored and v ~= orb and (v.Position - pos).Magnitude < 120 then
                 v.Velocity = (pos - v.Position).Unit * 250 + Vector3.new(0, 40, 0)
@@ -332,11 +353,11 @@ btnRed.MouseButton1Click:Connect(function()
     if not hrp then return end
     local spawnPos = hrp.Position + (hrp.CFrame.LookVector * 8)
     local redOrb = Instance.new("Part", workspace)
-    redOrb.Shape = Enum.PartType.Ball; redOrb.Size = Vector3.new(1, 1, 1); redOrb.Position = spawnPos
-    redOrb.Color = Color3.fromRGB(255, 0, 0); redOrb.Material = Enum.Material.Neon; redOrb.Anchored = true; redOrb.CanCollide = false
+    redOrb.Shape = Enum.PartType.Ball; redOrb.Size = Vector3.new(0.5, 0.5, 0.5); redOrb.Position = spawnPos
+    redOrb.Color = Color3.fromRGB(255, 50, 50); redOrb.Material = Enum.Material.Neon; redOrb.Anchored = true; redOrb.CanCollide = false
     playSound(9114222986, spawnPos, 7) 
-    TweenService:Create(redOrb, TweenInfo.new(0.8, Enum.EasingStyle.Sine), {Size = Vector3.new(8, 8, 8)}):Play()
-    for i=1, 10 do task.wait(0.08); createLightning(spawnPos, Color3.fromRGB(255, 50, 50), 12) end
+    TweenService:Create(redOrb, TweenInfo.new(0.8, Enum.EasingStyle.Sine), {Size = Vector3.new(10, 10, 10)}):Play()
+    for i=1, 10 do task.wait(0.08); createLightning(spawnPos, Color3.fromRGB(255, 80, 80), 12) end
     cc.Brightness = 1; cc.TintColor = Color3.fromRGB(255, 150, 150)
     TweenService:Create(cc, TweenInfo.new(0.5), {Brightness = 0, TintColor = Color3.fromRGB(255, 255, 255)}):Play()
     playSound(157878578, spawnPos, 9) 
@@ -371,6 +392,6 @@ btnOutfit.MouseButton1Click:Connect(function()
         local weld = Instance.new("Weld", blindfold)
         weld.Part0 = head; weld.Part1 = blindfold; weld.C0 = CFrame.new(0, 0.15, 0)
     end
-    btnOutfit.Text = "Đã Mod Gojo V11 Thành Công!"
+    btnOutfit.Text = "Đã Mod Gojo V12 Thành Công!"
     task.delay(2, function() btnOutfit.Text = "5. Mod Trang Phục Gojo Chuẩn" end)
 end)
