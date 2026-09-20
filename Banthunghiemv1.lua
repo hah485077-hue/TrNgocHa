@@ -1,9 +1,8 @@
--- VIP CYBER V16.7 - GITHUB READY
-print("=== VIP CYBER V16.7 ===")
+-- VIP CYBER V16.8 - GITHUB READY
+print("=== VIP CYBER V16.8 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
-local GS=game:GetService("GuiService")
 local p=P.LocalPlayer
 local pg=p:WaitForChild("PlayerGui")
 local cam=workspace.CurrentCamera
@@ -28,10 +27,8 @@ local savedPos=nil
 local menuOn=true
 local espEnabled=false
 
--- LAY TOPBAR INSET
-local topInset = 36
-pcall(function() topInset = GS.TopbarInset.Height end)
-local menuMinY = topInset
+-- VI TRI MENU: sat tren cung, khong dung topInset nua
+local menuMinY = 10
 local menuH = 215
 local menuW = 180
 
@@ -54,7 +51,7 @@ local ledElements = {}
 
 local f=Instance.new("Frame",g)
 f.Size=UDim2.new(0,menuW,0,menuH)
-f.Position=UDim2.new(0, 2, 0, menuMinY)
+f.Position=UDim2.new(0, 8, 0, menuMinY)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -172,17 +169,14 @@ local function mk(txt,x,y,w)
     return b
 end
 
--- COT BEN TRAI
 local bLock=mk("Lock On: TAT", 6, 4, 82)
 local bFast=mk("Chay Nhanh: TAT", 6, 30, 82)
 local bFly=mk("Bay: TAT", 6, 56, 82)
 
--- COT BEN PHAI
 local bSave=mk("Luu Diem", 92, 4, 82)
 local bBack=mk("Ve Diem", 92, 30, 82)
 local bNoclip=mk("Xuyen Map: TAT", 92, 56, 82)
 
--- 2 NUT CUOI
 local bTp=mk("Dich Chuyen", 6, 158, 82)
 local bESP=mk("ESP: TAT", 92, 158, 82)
 
@@ -287,7 +281,7 @@ slider("Toc do bay", 122, 20, 300, 60, function(v) fs=v end)
 
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0, 2, 0, menuMinY)
+openBtn.Position=UDim2.new(0, 8, 0, menuMinY)
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
@@ -323,7 +317,6 @@ track(UIS.InputChanged:Connect(function(input)
         if openMoved then
             local newX = openStartPos.X.Offset + delta.X
             local newY = openStartPos.Y.Offset + delta.Y
-            if newY < menuMinY then newY = menuMinY end
             openBtn.Position = UDim2.new(openStartPos.X.Scale, newX, openStartPos.Y.Scale, newY)
         end
     end
@@ -399,7 +392,6 @@ track(UIS.InputChanged:Connect(function(input)
         local delta = input.Position - dragStart
         local newX = startPos.X.Offset + delta.X
         local newY = startPos.Y.Offset + delta.Y
-        if newY < menuMinY then newY = menuMinY end
         f.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
     end
 end))
@@ -430,7 +422,6 @@ closeBtn.MouseButton1Click:Connect(function()
     openBtn.Visible = true
 end)
 
--- THU GON MENU: thu het, khong thua khoang trong
 local collapsed = false
 colBtn.MouseButton1Click:Connect(function()
     collapsed = not collapsed
@@ -786,4 +777,4 @@ track(p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end))
 
-print("=== OK V16.7 ===")
+print("=== OK V16.8 ===")
