@@ -1,5 +1,5 @@
 -- ==========================================
--- GOJO SATORU V5 - BẢN "CHUẨN RIU" XỊN SÒ
+-- GOJO SATORU V6 - BẢN CÓ TIẾNG NÓI (VOICE LINES)
 -- Dành riêng cho anh iu của em trên Delta iOS
 -- ==========================================
 
@@ -22,7 +22,7 @@ end)
 
 -- Tạo Menu GUI
 local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-screenGui.Name = "GojoV5Menu"
+screenGui.Name = "GojoV6Menu"
 screenGui.ResetOnSpawn = false
 
 local mainFrame = Instance.new("Frame", screenGui)
@@ -40,7 +40,7 @@ stroke.Thickness = 3
 local title = Instance.new("TextLabel", mainFrame)
 title.Size = UDim2.new(1, 0, 0, 45)
 title.BackgroundTransparency = 1
-title.Text = "GOJO SATORU V5 - CHUẨN RIU"
+title.Text = "GOJO SATORU V6 - VOICE"
 title.TextColor3 = Color3.fromRGB(220, 160, 255)
 title.Font = Enum.Font.GothamBlack
 title.TextSize = 16
@@ -92,8 +92,8 @@ end
 -- 6 CHỨC NĂNG CHÍNH
 local btn1 = createBtn("Lapse: Blue (Hút)", Color3.fromRGB(0, 100, 255), 55)
 local btn2 = createBtn("Reversal: Red (Đẩy)", Color3.fromRGB(255, 50, 50), 98)
-local btn3 = createBtn("Hư Thức Tử (Hollow Purple)", Color3.fromRGB(160, 0, 255), 141)
-local btn4 = createBtn("Vô Lượng Không Sứ", Color3.fromRGB(60, 0, 120), 184)
+local btn3 = createBtn("Hư Thức Tử (Có Tiếng)", Color3.fromRGB(160, 0, 255), 141)
+local btn4 = createBtn("Vô Lượng Không Sứ (Có Tiếng)", Color3.fromRGB(60, 0, 120), 184)
 local btn5 = createBtn("Mod Gojo Outfit", Color3.fromRGB(255, 105, 180), 227)
 local btn6 = createBtn("Tắt/Bật Hào Quang", Color3.fromRGB(0, 200, 100), 270)
 
@@ -103,14 +103,16 @@ local function getTargetPos(dist)
     return hrp.Position + (hrp.CFrame.LookVector * (dist or 50))
 end
 
--- Hàm tạo âm thanh
-local function playSound(id, pos)
-    local sound = Instance.new("Sound", workspace)
-    sound.SoundId = "rbxassetid://" .. id
-    sound.Volume = 3
-    if pos then sound.Position = pos end
-    sound:Play()
-    Debris:AddItem(sound, 5)
+-- Hàm phát âm thanh (Dùng pcall để chống lỗi trên đt)
+local function playSound(id, pos, vol)
+    pcall(function()
+        local sound = Instance.new("Sound", workspace)
+        sound.SoundId = "rbxassetid://" .. id
+        sound.Volume = vol or 3
+        if pos then sound.Position = pos end
+        sound:Play()
+        Debris:AddItem(sound, 6)
+    end)
 end
 
 -- ==================== CÁC CHỨC NĂNG ====================
@@ -119,7 +121,7 @@ end
 btn1.MouseButton1Click:Connect(function()
     local pos = getTargetPos(40)
     if not pos then return end
-    playSound(6895963173, pos)
+    playSound(6895963173, pos, 2) -- Tiếng ù ù
     
     local orb = Instance.new("Part", workspace)
     orb.Shape = Enum.PartType.Ball
@@ -136,7 +138,6 @@ btn1.MouseButton1Click:Connect(function()
     light.Range = 50
     light.Brightness = 8
 
-    -- Hiệu ứng hạt
     local particles = Instance.new("ParticleEmitter", orb)
     particles.Texture = "rbxassetid://243098098"
     particles.Color = ColorSequence.new(Color3.fromRGB(0, 150, 255))
@@ -144,7 +145,6 @@ btn1.MouseButton1Click:Connect(function()
     particles.Speed = NumberRange.new(10, 20)
     particles.Size = NumberSequence.new(2)
 
-    -- Hút vật thể
     task.spawn(function()
         for i = 1, 20 do
             task.wait(0.1)
@@ -157,7 +157,6 @@ btn1.MouseButton1Click:Connect(function()
         end
     end)
 
-    -- Camera rung
     local cam = workspace.CurrentCamera
     local orig = cam.CFrame
     local t = 0
@@ -182,7 +181,7 @@ end)
 btn2.MouseButton1Click:Connect(function()
     local pos = getTargetPos(40)
     if not pos then return end
-    playSound(6895963173, pos)
+    playSound(6895963173, pos, 2)
     
     local orb = Instance.new("Part", workspace)
     orb.Shape = Enum.PartType.Ball
@@ -238,9 +237,12 @@ btn2.MouseButton1Click:Connect(function()
     end)
 end)
 
--- 3. HƯ THỨC TỬ (HOLLOW PURPLE - 2 QUẢ CẦU VA CHẠM)
+-- 3. HƯ THỨC TỬ (HOLLOW PURPLE - 2 QUẢ CẦU VA CHẠM + TIẾNG NÓI)
 btn3.MouseButton1Click:Connect(function()
     if not hrp or not hrp.Parent then return end
+    
+    -- Phát âm thanh Gojo nói "Hollow Purple"
+    playSound(1837879086, hrp.Position, 5) 
     
     -- Tạo 2 quả cầu Đỏ và Xanh
     local blueOrb = Instance.new("Part", workspace)
@@ -261,12 +263,8 @@ btn3.MouseButton1Click:Connect(function()
     redOrb.CanCollide = false
     redOrb.Position = hrp.Position + (hrp.CFrame.RightVector * 10) + (hrp.CFrame.LookVector * 10)
 
-    -- Ánh sáng
     local l1 = Instance.new("PointLight", blueOrb); l1.Color = blueOrb.Color; l1.Range = 20; l1.Brightness = 5
     local l2 = Instance.new("PointLight", redOrb); l2.Color = redOrb.Color; l2.Range = 20; l2.Brightness = 5
-
-    -- Âm thanh
-    playSound(6895963173, hrp.Position)
 
     -- Tween 2 quả cầu bay vào nhau
     local centerPos = hrp.Position + (hrp.CFrame.LookVector * 5)
@@ -333,15 +331,14 @@ btn3.MouseButton1Click:Connect(function()
     end)
 end)
 
--- 4. VÔ LƯỢNG KHÔNG SỨ (DOMAIN EXPANSION - BẢN BLACK HOLE)
+-- 4. VÔ LƯỢNG KHÔNG SỨ (DOMAIN EXPANSION - CÓ TIẾNG NÓI)
 btn4.MouseButton1Click:Connect(function()
     if not hrp or not hrp.Parent then return end
     local pos = hrp.Position
     
-    -- Âm thanh
-    playSound(6895963173, pos)
+    -- Phát âm thanh Gojo nói "Domain Expansion"
+    playSound(1837878937, pos, 5)
 
-    -- Tạo không gian vũ trụ (Black Hole)
     local domain = Instance.new("Part", workspace)
     domain.Shape = Enum.PartType.Ball
     domain.Size = Vector3.new(150, 150, 150)
@@ -352,7 +349,6 @@ btn4.MouseButton1Click:Connect(function()
     domain.CanCollide = false
     domain.Transparency = 0.4
 
-    -- Lỗ đen bên trong
     local blackHole = Instance.new("Part", workspace)
     blackHole.Shape = Enum.PartType.Ball
     blackHole.Size = Vector3.new(30, 30, 30)
@@ -362,7 +358,6 @@ btn4.MouseButton1Click:Connect(function()
     blackHole.Anchored = true
     blackHole.CanCollide = false
 
-    -- Vòng sáng xung quanh lỗ đen
     local ring = Instance.new("Part", workspace)
     ring.Shape = Enum.PartType.Cylinder
     ring.Size = Vector3.new(2, 80, 80)
@@ -374,13 +369,11 @@ btn4.MouseButton1Click:Connect(function()
     ring.CanCollide = false
     ring.Transparency = 0.2
 
-    -- Hiệu ứng Highlight
     local hl = Instance.new("Highlight", domain)
     hl.FillColor = Color3.fromRGB(20, 0, 40)
     hl.OutlineColor = Color3.fromRGB(160, 0, 255)
     hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 
-    -- Hiệu ứng sao bên trong
     local particles = Instance.new("ParticleEmitter", domain)
     particles.Texture = "rbxassetid://243098098"
     particles.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255))
@@ -390,17 +383,14 @@ btn4.MouseButton1Click:Connect(function()
     particles.Lifetime = NumberRange.new(2)
     particles.SpreadAngle = Vector2.new(180, 180)
 
-    -- Color Correction (Tối màn hình)
     local cc = Instance.new("ColorCorrectionEffect", Lighting)
     cc.Brightness = -0.5
     cc.Contrast = 0.5
     cc.TintColor = Color3.fromRGB(150, 0, 255)
 
-    -- Hiệu ứng nhấp nháy
     local tween = TweenService:Create(domain, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Transparency = 0.7})
     tween:Play()
 
-    -- Xoay vòng
     local rotConn
     rotConn = RunService.RenderStepped:Connect(function()
         if ring and ring.Parent then
@@ -408,7 +398,6 @@ btn4.MouseButton1Click:Connect(function()
         end
     end)
 
-    -- Tự động xóa sau 8 giây
     task.delay(8, function()
         tween:Cancel()
         if rotConn then rotConn:Disconnect() end
@@ -419,11 +408,10 @@ btn4.MouseButton1Click:Connect(function()
     end)
 end)
 
--- 5. MOD GOJO OUTFIT (BẢN FIX LỖI)
+-- 5. MOD GOJO OUTFIT
 btn5.MouseButton1Click:Connect(function()
     if not char or not char.Parent then return end
     
-    -- Đổi màu da
     local bodyColors = char:FindFirstChildOfClass("BodyColors")
     if bodyColors then
         bodyColors.HeadColor3 = Color3.fromRGB(255, 220, 200)
@@ -434,7 +422,6 @@ btn5.MouseButton1Click:Connect(function()
         bodyColors.RightLegColor3 = Color3.fromRGB(255, 220, 200)
     end
 
-    -- Thay áo quần (Dùng pcall chống lỗi)
     pcall(function()
         local shirt = char:FindFirstChildOfClass("Shirt") or Instance.new("Shirt", char)
         shirt.ShirtTemplate = "rbxassetid://120894858" -- Áo đen
@@ -442,7 +429,6 @@ btn5.MouseButton1Click:Connect(function()
         pants.PantsTemplate = "rbxassetid://120894858" -- Quần đen
     end)
 
-    -- Tạo tóc trắng + Bịt mắt đen (Gojo Style)
     local head = char:FindFirstChild("Head")
     if head then
         if not head:FindFirstChild("GojoHair") then
@@ -470,7 +456,7 @@ btn5.MouseButton1Click:Connect(function()
             blindfold.Anchored = false
             blindfold.CanCollide = false
             blindfold.Massless = true
-            blindfold.CFrame = head.CFrame * CFrame.new(0, 0, -0.5) -- Che mắt
+            blindfold.CFrame = head.CFrame * CFrame.new(0, 0, -0.5)
             local weld = Instance.new("WeldConstraint", blindfold)
             weld.Part0 = head
             weld.Part1 = blindfold
@@ -521,4 +507,4 @@ btn6.MouseButton1Click:Connect(function()
     end
 end)
 
-print("Gojo V5 - Bản Chuẩn Riu đã tải thành công! Chúc anh iu chơi vui nha!")
+print("Gojo V6 - Bản Voice đã tải thành công! Chúc anh iu chơi vui nha!")
