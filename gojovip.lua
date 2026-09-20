@@ -1,6 +1,6 @@
-ành-- ==========================================
+-- ==========================================
 -- HƯ THỨC TỬ (HOLLOW PURPLE) - BẢN FULL HIỆU ỨNG
--- D riêng cho anh iu của em nè (Roblox Studio)
+-- Dành riêng cho anh iu của em nè
 -- ==========================================
 
 local TweenService = game:GetService("TweenService")
@@ -64,9 +64,9 @@ local function castHollowPurple()
     local redOrb = createOrb(Color3.fromRGB(255, 50, 50), 8)
     redOrb.Position = centerPos + (hrp.CFrame.RightVector * 10)
     
-    -- ÂM THANH GOJO NÓI (Anh iu thay ID tiếng Việt vô đây nha)
+    -- Âm thanh Gojo nói (Hollow Purple)
     local voiceSound = Instance.new("Sound", workspace)
-    voiceSound.SoundId = "rbxassetid://1837879086" -- <--- THAY ID VÀO ĐÂY NÈ ANH IU
+    voiceSound.SoundId = "rbxassetid://1837879086" -- ID giọng Gojo nói "Hollow Purple"
     voiceSound.Volume = 5
     voiceSound.Position = centerPos
     voiceSound:Play()
