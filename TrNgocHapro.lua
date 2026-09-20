@@ -1,5 +1,5 @@
--- VIP CYBER V16.6 - GITHUB READY
-print("=== VIP CYBER V16.6 ===")
+-- VIP CYBER V16.8 - GITHUB READY
+print("=== VIP CYBER V16.8 ===")
 local P=game:GetService("Players")
 local RS=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
@@ -27,6 +27,11 @@ local savedPos=nil
 local menuOn=true
 local espEnabled=false
 
+-- VI TRI MENU: sat tren cung, khong dung topInset nua
+local menuMinY = 10
+local menuH = 215
+local menuW = 180
+
 local g=Instance.new("ScreenGui")
 g.Name="VipMenu"
 g.ResetOnSpawn=false
@@ -45,8 +50,8 @@ local rainbowSeq = ColorSequence.new({
 local ledElements = {}
 
 local f=Instance.new("Frame",g)
-f.Size=UDim2.new(0,180,0,235)
-f.Position=UDim2.new(0, 2, 0, 25)
+f.Size=UDim2.new(0,menuW,0,menuH)
+f.Position=UDim2.new(0, 8, 0, menuMinY)
 f.BackgroundColor3=Color3.fromRGB(12,12,22)
 f.BorderSizePixel=0
 f.ZIndex=1
@@ -164,17 +169,14 @@ local function mk(txt,x,y,w)
     return b
 end
 
--- COT BEN TRAI (3 nut dau)
 local bLock=mk("Lock On: TAT", 6, 4, 82)
 local bFast=mk("Chay Nhanh: TAT", 6, 30, 82)
 local bFly=mk("Bay: TAT", 6, 56, 82)
 
--- COT BEN PHAI (3 nut dau)
 local bSave=mk("Luu Diem", 92, 4, 82)
 local bBack=mk("Ve Diem", 92, 30, 82)
 local bNoclip=mk("Xuyen Map: TAT", 92, 56, 82)
 
--- 2 NUT CUOI CUNG (Dich Chuyen trai, ESP phai)
 local bTp=mk("Dich Chuyen", 6, 158, 82)
 local bESP=mk("ESP: TAT", 92, 158, 82)
 
@@ -274,13 +276,12 @@ local function slider(label,y,min,max,init,cb)
     end)
 end
 
--- 2 thanh truot nam giua (duoi 3 nut, tren 2 nut cuoi)
 slider("Toc do chay", 86, 16, 200, 50, function(v) rs2=v end)
 slider("Toc do bay", 122, 20, 300, 60, function(v) fs=v end)
 
 local openBtn=Instance.new("TextButton",g)
 openBtn.Size=UDim2.new(0,44,0,44)
-openBtn.Position=UDim2.new(0, 2, 0, 25)
+openBtn.Position=UDim2.new(0, 8, 0, menuMinY)
 openBtn.BackgroundColor3=Color3.fromRGB(20,20,40)
 openBtn.Text="VIP"
 openBtn.TextColor3=Color3.fromRGB(0,255,255)
@@ -314,7 +315,9 @@ track(UIS.InputChanged:Connect(function(input)
         local delta = input.Position - openDragStart
         if math.abs(delta.X) > 10 or math.abs(delta.Y) > 10 then openMoved = true end
         if openMoved then
-            openBtn.Position = UDim2.new(openStartPos.X.Scale, openStartPos.X.Offset + delta.X, openStartPos.Y.Scale, openStartPos.Y.Offset + delta.Y)
+            local newX = openStartPos.X.Offset + delta.X
+            local newY = openStartPos.Y.Offset + delta.Y
+            openBtn.Position = UDim2.new(openStartPos.X.Scale, newX, openStartPos.Y.Scale, newY)
         end
     end
 end))
@@ -387,7 +390,9 @@ end)
 track(UIS.InputChanged:Connect(function(input)
     if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
         local delta = input.Position - dragStart
-        f.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        local newX = startPos.X.Offset + delta.X
+        local newY = startPos.Y.Offset + delta.Y
+        f.Position = UDim2.new(startPos.X.Scale, newX, startPos.Y.Scale, newY)
     end
 end))
 track(UIS.InputEnded:Connect(function(input)
@@ -421,13 +426,13 @@ local collapsed = false
 colBtn.MouseButton1Click:Connect(function()
     collapsed = not collapsed
     if collapsed then
-        f.Size = UDim2.new(0,180,0,28)
+        f.Size = UDim2.new(0,menuW,0,28)
         colBtn.Text = "+"
         for _, obj in ipairs(hide) do
             if obj:IsA("GuiObject") then obj.Visible = false end
         end
     else
-        f.Size = UDim2.new(0,180,0,235)
+        f.Size = UDim2.new(0,menuW,0,menuH)
         colBtn.Text = "-"
         for _, obj in ipairs(hide) do
             if obj:IsA("GuiObject") then obj.Visible = true end
@@ -772,4 +777,4 @@ track(p.CharacterAdded:Connect(function(c)
     dnBtn.Visible=false
 end))
 
-print("=== OK V16.6 ===")
+print("=== OK V16.8 ===")
