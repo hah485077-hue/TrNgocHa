@@ -1,7 +1,6 @@
 -- ==========================================
--- GOJO SATORU FULL OPTION (MOBILE CHUYÊN DỤNG)
--- Tác giả: AI Assistant
--- Dành riêng cho Delta iOS
+-- GOJO SATORU V3.5 - FULL EFFECTS + MOD ĐỒ
+-- Dành riêng cho anh iu của em trên Delta iOS
 -- ==========================================
 
 local Players = game:GetService("Players")
@@ -9,165 +8,107 @@ local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
+-- Đợi nhân vật load xong mới chạy (tránh lỗi trên đt)
+local char = player.Character or player.CharacterAdded:Wait()
+local hrp = char:WaitForChild("HumanoidRootPart")
+
 -- Tạo Menu GUI
 local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-screenGui.Name = "GojoFullMenu"
+screenGui.Name = "GojoV35Menu"
 screenGui.ResetOnSpawn = false
 
 local mainFrame = Instance.new("Frame", screenGui)
-mainFrame.Size = UDim2.new(0, 260, 0, 320)
-mainFrame.Position = UDim2.new(0.5, -130, 0.5, -160)
-mainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+mainFrame.Size = UDim2.new(0, 270, 0, 390)
+mainFrame.Position = UDim2.new(0.5, -135, 0.5, -195)
+mainFrame.BackgroundColor3 = Color3.fromRGB(15, 10, 25)
 mainFrame.Active = true
 mainFrame.Draggable = true
-Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 12)
 
 local stroke = Instance.new("UIStroke", mainFrame)
-stroke.Color = Color3.fromRGB(150, 0, 255)
+stroke.Color = Color3.fromRGB(180, 0, 255)
 stroke.Thickness = 3
 
 local title = Instance.new("TextLabel", mainFrame)
-title.Size = UDim2.new(1, 0, 0, 40)
+title.Size = UDim2.new(1, 0, 0, 45)
 title.BackgroundTransparency = 1
-title.Text = "GOJO SATORU - FULL"
-title.TextColor3 = Color3.fromRGB(200, 150, 255)
+title.Text = "GOJO SATORU V3.5 - ULTIMATE"
+title.TextColor3 = Color3.fromRGB(220, 160, 255)
 title.Font = Enum.Font.GothamBlack
 title.TextSize = 16
 
 -- Hàm tạo nút bấm
 local function createBtn(name, color, y)
     local btn = Instance.new("TextButton", mainFrame)
-    btn.Size = UDim2.new(0.85, 0, 0, 35)
+    btn.Size = UDim2.new(0.85, 0, 0, 38)
     btn.Position = UDim2.new(0.075, 0, 0, y)
     btn.BackgroundColor3 = color
     btn.Text = name
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     btn.Font = Enum.Font.GothamBold
-    btn.TextSize = 14
-    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+    btn.TextSize = 13
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
     return btn
 end
 
--- Tạo các nút chiêu thức
-local btnBlue = createBtn("Lapse: Blue (Hút)", Color3.fromRGB(0, 120, 255), 45)
-local btnRed = createBtn("Reversal: Red (Đẩy)", Color3.fromRGB(255, 60, 60), 85)
-local btnPurple = createBtn("Hollow Purple (Tia Tím)", Color3.fromRGB(160, 0, 255), 125)
-local btnDomain = createBtn("Domain Expansion", Color3.fromRGB(60, 0, 120), 165)
-local btnTeleport = createBtn("Teleport (Dịch Chuyển)", Color3.fromRGB(0, 200, 150), 205)
-local btnInfinity = createBtn("Infinity (Bật/Tắt)", Color3.fromRGB(200, 200, 0), 245)
+-- 6 CHỨC NĂNG TỪ TRÊN XUỐNG
+local btn1 = createBtn("Lapse: Blue (Hút Cực Mạnh)", Color3.fromRGB(0, 100, 255), 50)
+local btn2 = createBtn("Reversal: Red (Đẩy Bay Màu)", Color3.fromRGB(255, 50, 50), 92)
+local btn3 = createBtn("Hollow Purple (Tia Sét Tím)", Color3.fromRGB(160, 0, 255), 134)
+local btn4 = createBtn("Domain Expansion (Vô Hạn)", Color3.fromRGB(60, 0, 120), 176)
+local btn5 = createBtn("Gojo Aura (Hào Quang)", Color3.fromRGB(0, 200, 100), 218)
+local btn6 = createBtn("Mod Gojo Outfit (Tóc Trắng)", Color3.fromRGB(255, 105, 180), 260)
 
--- Nút Ẩn/Hiện Menu
+-- Nút Ẩn/Hiện
 local toggleBtn = Instance.new("TextButton", screenGui)
-toggleBtn.Size = UDim2.new(0, 50, 0, 50)
-toggleBtn.Position = UDim2.new(0, 10, 0.5, -25)
-toggleBtn.BackgroundColor3 = Color3.fromRGB(80, 0, 150)
-toggleBtn.Text = "Menu"
+toggleBtn.Size = UDim2.new(0, 45, 0, 45)
+toggleBtn.Position = UDim2.new(0, 10, 0.5, -22)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+toggleBtn.Text = "Ẩn"
 toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 toggleBtn.Font = Enum.Font.GothamBold
 toggleBtn.TextSize = 10
-Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0, 25)
-
+Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(0, 22)
 toggleBtn.MouseButton1Click:Connect(function()
     mainFrame.Visible = not mainFrame.Visible
 end)
 
--- Hàm lấy vị trí mục tiêu (Dựa theo hướng Camera)
-local function getTargetPos(distance)
-    local char = player.Character
-    if not char or not char:FindFirstChild("HumanoidRootPart") then return nil end
-    local hrp = char.HumanoidRootPart
-    -- Tự động bắn về phía trước mặt 40 studs
-    return hrp.Position + (hrp.CFrame.LookVector * (distance or 40))
+-- Hàm lấy hướng camera
+local function getTargetPos(dist)
+    if not hrp or not hrp.Parent then return nil end
+    return hrp.Position + (hrp.CFrame.LookVector * (dist or 50))
 end
 
--- Hàm tạo âm thanh
-local function playSound(id, pos)
-    local sound = Instance.new("Sound", workspace)
-    sound.SoundId = "rbxassetid://" .. id
-    sound.Volume = 2
-    if pos then sound.Position = pos end
-    sound:Play()
-    game:GetService("Debris"):AddItem(sound, 5)
-end
+-- ==================== CÁC CHỨC NĂNG ====================
 
--- ==================== CÁC CHIÊU THỨC ====================
-
--- 1. BLUE (Lapse)
-btnBlue.MouseButton1Click:Connect(function()
+-- 1. LAPSE BLUE
+btn1.MouseButton1Click:Connect(function()
     local pos = getTargetPos(40)
     if not pos then return end
-    playSound(6895963173, pos)
-    
     local orb = Instance.new("Part", workspace)
     orb.Shape = Enum.PartType.Ball
-    orb.Size = Vector3.new(12, 12, 12)
+    orb.Size = Vector3.new(15, 15, 15)
     orb.Position = pos
     orb.Color = Color3.fromRGB(0, 150, 255)
     orb.Material = Enum.Material.Neon
     orb.Anchored = true
     orb.CanCollide = false
-
+    orb.Transparency = 0.2
     local light = Instance.new("PointLight", orb)
     light.Color = Color3.fromRGB(0, 150, 255)
-    light.Range = 40
-    light.Brightness = 5
-
-    -- Hiệu ứng hút vật thể xung quanh
+    light.Range = 50
+    light.Brightness = 8
     task.spawn(function()
         for i = 1, 20 do
             task.wait(0.1)
             if not orb.Parent then break end
             for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("BasePart") and v ~= orb and not v.Anchored and (v.Position - orb.Position).Magnitude < 50 then
-                    v.Velocity = (orb.Position - v.Position).Unit * 100
+                if v:IsA("BasePart") and v ~= orb and not v.Anchored and (v.Position - orb.Position).Magnitude < 70 then
+                    v.Velocity = (orb.Position - v.Position).Unit * 150
                 end
             end
         end
     end)
-
-    task.delay(2, function()
-        if orb then
-            local ex = Instance.new("Explosion", workspace)
-            ex.BlastRadius = 20
-            ex.Position = orb.Position
-            orb:Destroy()
-        end
-    end)
-end)
-
--- 2. RED (Reversal)
-btnRed.MouseButton1Click:Connect(function()
-    local pos = getTargetPos(40)
-    if not pos then return end
-    playSound(6895963173, pos)
-    
-    local orb = Instance.new("Part", workspace)
-    orb.Shape = Enum.PartType.Ball
-    orb.Size = Vector3.new(12, 12, 12)
-    orb.Position = pos
-    orb.Color = Color3.fromRGB(255, 50, 50)
-    orb.Material = Enum.Material.Neon
-    orb.Anchored = true
-    orb.CanCollide = false
-
-    local light = Instance.new("PointLight", orb)
-    light.Color = Color3.fromRGB(255, 50, 50)
-    light.Range = 40
-    light.Brightness = 5
-
-    -- Hiệu ứng đẩy vật thể xung quanh
-    task.spawn(function()
-        for i = 1, 20 do
-            task.wait(0.1)
-            if not orb.Parent then break end
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("BasePart") and v ~= orb and not v.Anchored and (v.Position - orb.Position).Magnitude < 50 then
-                    v.Velocity = (v.Position - orb.Position).Unit * 150
-                end
-            end
-        end
-    end)
-
     task.delay(2, function()
         if orb then
             local ex = Instance.new("Explosion", workspace)
@@ -178,50 +119,69 @@ btnRed.MouseButton1Click:Connect(function()
     end)
 end)
 
+-- 2. REVERSAL RED
+btn2.MouseButton1Click:Connect(function()
+    local pos = getTargetPos(40)
+    if not pos then return end
+    local orb = Instance.new("Part", workspace)
+    orb.Shape = Enum.PartType.Ball
+    orb.Size = Vector3.new(15, 15, 15)
+    orb.Position = pos
+    orb.Color = Color3.fromRGB(255, 50, 50)
+    orb.Material = Enum.Material.Neon
+    orb.Anchored = true
+    orb.CanCollide = false
+    orb.Transparency = 0.2
+    local light = Instance.new("PointLight", orb)
+    light.Color = Color3.fromRGB(255, 50, 50)
+    light.Range = 50
+    light.Brightness = 8
+    task.spawn(function()
+        for i = 1, 20 do
+            task.wait(0.1)
+            if not orb.Parent then break end
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BasePart") and v ~= orb and not v.Anchored and (v.Position - orb.Position).Magnitude < 70 then
+                    v.Velocity = (v.Position - orb.Position).Unit * 200
+                end
+            end
+        end
+    end)
+    task.delay(2, function()
+        if orb then
+            local ex = Instance.new("Explosion", workspace)
+            ex.BlastRadius = 30
+            ex.Position = orb.Position
+            orb:Destroy()
+        end
+    end)
+end)
+
 -- 3. HOLLOW PURPLE
-btnPurple.MouseButton1Click:Connect(function()
-    local char = player.Character
-    if not char or not char:FindFirstChild("HumanoidRootPart") then return end
-    local startPos = char.HumanoidRootPart.Position
-    local endPos = getTargetPos(80)
+btn3.MouseButton1Click:Connect(function()
+    if not hrp or not hrp.Parent then return end
+    local startPos = hrp.Position
+    local endPos = getTargetPos(100)
     if not endPos then return end
-    
-    playSound(6895963173, startPos)
-    
     local beam = Instance.new("Part", workspace)
     beam.Anchored = true
     beam.CanCollide = false
     beam.Material = Enum.Material.Neon
     beam.Color = Color3.fromRGB(160, 0, 255)
-    beam.Size = Vector3.new(8, 8, (startPos - endPos).Magnitude)
+    beam.Size = Vector3.new(10, 10, (startPos - endPos).Magnitude)
     beam.CFrame = CFrame.new(startPos, endPos) * CFrame.new(0, 0, -beam.Size.Z/2)
-
+    beam.Transparency = 0.1
     local light = Instance.new("PointLight", beam)
     light.Color = Color3.fromRGB(160, 0, 255)
     light.Range = 60
     light.Brightness = 8
-
-    -- Hiệu ứng rung camera
-    local cam = workspace.CurrentCamera
-    local orig = cam.CFrame
-    local t = 0
-    local conn
-    conn = RunService.RenderStepped:Connect(function()
-        t = t + 0.1
-        if t > 2 then conn:Disconnect() return end
-        cam.CFrame = orig * CFrame.new(math.random(-1,1), math.random(-1,1), 0)
-    end)
-
-    task.delay(3, function() if beam then beam:Destroy() end end)
+    task.delay(2.5, function() if beam then beam:Destroy() end end)
 end)
 
 -- 4. DOMAIN EXPANSION
-btnDomain.MouseButton1Click:Connect(function()
-    local char = player.Character
-    if not char or not char:FindFirstChild("HumanoidRootPart") then return end
-    local pos = char.HumanoidRootPart.Position
-    playSound(6895963173, pos)
-    
+btn4.MouseButton1Click:Connect(function()
+    if not hrp or not hrp.Parent then return end
+    local pos = hrp.Position
     local domain = Instance.new("Part", workspace)
     domain.Shape = Enum.PartType.Ball
     domain.Size = Vector3.new(80, 80, 80)
@@ -230,83 +190,101 @@ btnDomain.MouseButton1Click:Connect(function()
     domain.Material = Enum.Material.ForceField
     domain.Anchored = true
     domain.CanCollide = false
-    domain.Transparency = 0.3
-
+    domain.Transparency = 0.4
     local hl = Instance.new("Highlight", domain)
-    hl.FillColor = Color3.fromRGB(40, 0, 80)
-    hl.OutlineColor = Color3.fromRGB(160, 0, 255)
-
-    local tween = TweenService:Create(domain, TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Transparency = 0.7})
+    hl.FillColor = Color3.fromRGB(30, 0, 60)
+    hl.OutlineColor = Color3.fromRGB(180, 0, 255)
+    hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    local tween = TweenService:Create(domain, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), {Transparency = 0.7})
     tween:Play()
-
     task.delay(6, function()
         tween:Cancel()
         if domain then domain:Destroy() end
     end)
 end)
 
--- 5. TELEPORT (Dịch chuyển tức thời)
-btnTeleport.MouseButton1Click:Connect(function()
-    local char = player.Character
-    if not char or not char:FindFirstChild("HumanoidRootPart") then return end
-    local hrp = char.HumanoidRootPart
-    playSound(6895963173, hrp.Position)
-    
-    -- Dịch chuyển về phía trước 50 studs
-    hrp.CFrame = hrp.CFrame + (hrp.CFrame.LookVector * 50)
-    
-    -- Hiệu ứng vệt mờ
-    local trail = Instance.new("Part", workspace)
-    trail.Size = Vector3.new(3, 3, 50)
-    trail.CFrame = hrp.CFrame * CFrame.new(0, 0, -25)
-    trail.Color = Color3.fromRGB(160, 0, 255)
-    trail.Material = Enum.Material.Neon
-    trail.Anchored = true
-    trail.CanCollide = false
-    task.delay(1, function() if trail then trail:Destroy() end end)
-end)
-
--- 6. INFINITY (Vô hạn - Bật/Tắt)
-local infinityOn = false
-local infinitySphere = nil
-local infinityConn = nil
-
-btnInfinity.MouseButton1Click:Connect(function()
-    local char = player.Character
-    if not char or not char:FindFirstChild("HumanoidRootPart") then return end
-    
-    infinityOn = not infinityOn
-    
-    if infinityOn then
-        btnInfinity.Text = "Infinity: BẬT"
-        btnInfinity.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
-        
-        infinitySphere = Instance.new("Part", workspace)
-        infinitySphere.Shape = Enum.PartType.Ball
-        infinitySphere.Size = Vector3.new(10, 10, 10)
-        infinitySphere.Color = Color3.fromRGB(150, 0, 255)
-        infinitySphere.Material = Enum.Material.ForceField
-        infinitySphere.Anchored = true
-        infinitySphere.CanCollide = false
-        infinitySphere.Transparency = 0.5
-        
-        local light = Instance.new("PointLight", infinitySphere)
-        light.Color = Color3.fromRGB(150, 0, 255)
-        light.Range = 15
-        light.Brightness = 3
-
-        -- Cập nhật vị trí quả cầu theo nhân vật
-        infinityConn = RunService.RenderStepped:Connect(function()
-            if char and char:FindFirstChild("HumanoidRootPart") and infinitySphere then
-                infinitySphere.Position = char.HumanoidRootPart.Position
+-- 5. GOJO AURA
+local auraOn = false
+local auraPart = nil
+local auraConn = nil
+btn5.MouseButton1Click:Connect(function()
+    if not hrp or not hrp.Parent then return end
+    auraOn = not auraOn
+    if auraOn then
+        btn5.Text = "Gojo Aura: BẬT"
+        btn5.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        auraPart = Instance.new("Part", workspace)
+        auraPart.Shape = Enum.PartType.Ball
+        auraPart.Size = Vector3.new(12, 12, 12)
+        auraPart.Color = Color3.fromRGB(120, 0, 255)
+        auraPart.Material = Enum.Material.ForceField
+        auraPart.Anchored = true
+        auraPart.CanCollide = false
+        auraPart.Transparency = 0.5
+        local light = Instance.new("PointLight", auraPart)
+        light.Color = Color3.fromRGB(120, 0, 255)
+        light.Range = 20
+        light.Brightness = 5
+        auraConn = RunService.RenderStepped:Connect(function()
+            if hrp and hrp.Parent and auraPart then
+                auraPart.Position = hrp.Position
+                auraPart.CFrame = auraPart.CFrame * CFrame.Angles(0, 0.1, 0)
             end
         end)
     else
-        btnInfinity.Text = "Infinity (Bật/Tắt)"
-        btnInfinity.BackgroundColor3 = Color3.fromRGB(200, 200, 0)
-        if infinityConn then infinityConn:Disconnect() end
-        if infinitySphere then infinitySphere:Destroy() end
+        btn5.Text = "Gojo Aura (Hào Quang)"
+        btn5.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+        if auraConn then auraConn:Disconnect() end
+        if auraPart then auraPart:Destroy() end
     end
 end)
 
-print("Gojo Full Option đã được tải thành công!")
+-- 6. MOD GOJO OUTFIT (FIXED)
+btn6.MouseButton1Click:Connect(function()
+    if not char or not char.Parent then return end
+    
+    -- Đổi màu da (BodyColors)
+    local bodyColors = char:FindFirstChildOfClass("BodyColors")
+    if bodyColors then
+        bodyColors.HeadColor3 = Color3.fromRGB(255, 220, 200)
+        bodyColors.TorsoColor3 = Color3.fromRGB(255, 220, 200)
+        bodyColors.LeftArmColor3 = Color3.fromRGB(255, 220, 200)
+        bodyColors.RightArmColor3 = Color3.fromRGB(255, 220, 200)
+        bodyColors.LeftLegColor3 = Color3.fromRGB(255, 220, 200)
+        bodyColors.RightLegColor3 = Color3.fromRGB(255, 220, 200)
+    end
+
+    -- Thay áo và quần (Dùng pcall để chống lỗi trên đt)
+    pcall(function()
+        local shirt = char:FindFirstChildOfClass("Shirt") or Instance.new("Shirt", char)
+        shirt.ShirtTemplate = "rbxassetid://120894858" -- Áo đen
+        local pants = char:FindFirstChildOfClass("Pants") or Instance.new("Pants", char)
+        pants.PantsTemplate = "rbxassetid://120894858" -- Quần đen
+    end)
+
+    -- Tạo tóc trắng
+    local head = char:FindFirstChild("Head")
+    if head and not head:FindFirstChild("GojoHair") then
+        local hair = Instance.new("Part", head)
+        hair.Name = "GojoHair"
+        hair.Shape = Enum.PartType.Ball
+        hair.Size = Vector3.new(1.5, 1, 1.5)
+        hair.Color = Color3.fromRGB(255, 255, 255)
+        hair.Material = Enum.Material.SmoothPlastic
+        hair.Anchored = false
+        hair.CanCollide = false
+        hair.Massless = true
+        hair.CFrame = head.CFrame * CFrame.new(0, 0.5, 0)
+        
+        local weld = Instance.new("WeldConstraint", hair)
+        weld.Part0 = head
+        weld.Part1 = hair
+    end
+    
+    btn6.Text = "Đã Mod Đồ Gojo!"
+    task.delay(2, function()
+        btn6.Text = "Mod Gojo Outfit (Tóc Trắng)"
+    end)
+end)
+
+print("Gojo V3.5 Ultimate đã tải thành công! Chúc anh iu chơi vui nha!")
